@@ -1,0 +1,94 @@
+/* Klickbare Bild-Kacheln für Quiz-Fragen (z. B. "welche Diagramme sind linear?") */
+
+.image-quiz {
+  border: 2px solid var(--highlight, #467AAC);
+  border-radius: .25em;
+  padding: 1em 0.75em;
+  margin: 1em 0;
+  background-color: rgba(127, 127, 127, 0.05);
+}
+
+.image-quiz-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75em;
+  justify-content: center;
+}
+
+.image-quiz-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.5em;
+  border: 2px solid rgba(127, 127, 127, 0.3);
+  border-radius: 0.4em;
+  background-color: white;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.image-quiz-item:hover {
+  border-color: var(--highlight, #467AAC);
+}
+
+.image-quiz-item img {
+  display: block;
+  max-width: 160px;
+  height: auto;
+  pointer-events: none;
+}
+
+.image-quiz-label {
+  font-weight: 600;
+}
+
+.image-quiz-item.selected {
+  border-color: var(--highlight, #467AAC);
+  background-color: rgba(70, 122, 172, 0.12);
+}
+
+.image-quiz-item.image-quiz-correct {
+  border-color: var(--correct, #59935B);
+  background-color: var(--correct_alpha, #c0edc2);
+  cursor: default;
+}
+
+.image-quiz-item.image-quiz-incorrect {
+  border-color: var(--incorrect, #983E82);
+  background-color: var(--incorrect_alpha, #edaddd);
+  cursor: default;
+}
+
+.image-quiz-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75em;
+  margin-top: 0.75em;
+}
+
+.image-quiz-check-btn,
+.image-quiz-reset-btn {
+  height: 2em;
+  border: none;
+  border-radius: 0.5em;
+  background-color: var(--highlight, #467AAC);
+  color: white;
+  padding: 0 0.75em;
+  cursor: pointer;
+}
+
+.image-quiz-check-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.image-quiz-reset-btn {
+  background-color: rgba(127, 127, 127, 0.6);
+}
+
+.image-quiz-result {
+  font-weight: 600;
+}
