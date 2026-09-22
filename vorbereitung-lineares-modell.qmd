@@ -168,13 +168,20 @@ $$
 Die Steigung $\beta_1$ sagt uns, um wie viele Einheiten sich die Ergebnisvariable verändert, wenn die Prädiktorvariable um eine Einheit steigt. In unserem Beispiel sagt die Stegung uns also, um wie viele Punkte der Skala sich Schmerzen verändern, wenn 
 die Handy-Nutzung um eine Stunde zunimmt. 
 
-Nehmen wir an, du schätzt eine einfache lineare Regression und findest heraus, dass die Steigung $\beta_1$ für dein Regressionsmodell 0.5 beträgt. Welches wäre dann die korrekte Aussage?
+
 
 
 ::: {.webex-check .webex-box}
 
+Nehmen wir an, du schätzt eine einfache lineare Regression und findest heraus, dass die Steigung $\beta_1$ für dein Regressionsmodell 0.5 beträgt. Was wäre dann die korrekte Aussage?
+
 Wenn Handy-Nutzung um eine `r mcq(c("Sekunde", "Minute", answer = "Stunde"))` zunimmt, 
 dann `r mcq(c(answer = "steigt", "sinkt"))` der Schmerz um `r mcq(c("5", "0.5", answer = "0.5 Punkte der Schmerzskala"))`.
+
+Nehmen wir nun an, du findest heraus dass $\beta_1 = -0.2$ Was wäre dann die korrekte Aussage?
+
+Wenn Handy-Nutzung um eine `r mcq(c("Sekunde", "Minute", answer = "Stunde"))` zunimmt, 
+dann `r mcq(c("steigt", answer = "sinkt"))` der Schmerz um `r mcq(c("0.2", answer = "0.2 Punkte der Schmerzskala", "0.2 Ouchies"))`.
 
 :::
 
@@ -257,4 +264,11 @@ Plot.plot({
   ]
 })
 ```
+
+Falls dir die hier gezeigten Konzepte alle klar sind, dann herzliche Gratulation! Falls nicht, empfehlen wir, den Statistik-Stoff aus dem Bachelor zu repetieren. 
+
+**Weiterführende Unterlagen:**
+
+- Quantitative Methoden 2: https://djfgerber.github.io/aps_statistik1/index.html
+- Quantitative Methoden 3: https://mdsteiner.github.io/quantitative_methoden_3/
 
