@@ -269,6 +269,6 @@ Falls dir die hier gezeigten Konzepte alle klar sind, dann herzliche Gratulation
 
 **Weiterführende Unterlagen:**
 
-- Quantitative Methoden 2: https://djfgerber.github.io/aps_statistik1/index.html
-- Quantitative Methoden 3: https://mdsteiner.github.io/quantitative_methoden_3/
+- Quantitative Methoden 2: <a href="https://djfgerber.github.io/aps_statistik1/index.html" target="_blank">Link</a>
+- Quantitative Methoden 3: <a href="https://mdsteiner.github.io/quantitative_methoden_3/" target="_blank">Link</a>
 
