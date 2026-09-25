@@ -7,3 +7,7 @@ Auf dieser Website sind bestimmte Materialien zur Vorlesung "Fortgeschrittene Me
 ## Vorbereitung auf die zweite Sitzung
 
 ➡️ [Vorbereitung: Das einfache lineare Modell](vorbereitung-lineares-modell.qmd)
+
+## Probeprüfung
+
+➡️ [Probeprüfung: Regressionsanalyse](probepruefung-regression.qmd)

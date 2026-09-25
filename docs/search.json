@@ -21,13 +21,6 @@
     "text": "Das lineare Modell\nDas einfache lineare Modell beschreibt einen Zusammenhang zwischen einer Ergebnisvariable \\(y\\) (in unserem Beispiel Schmerz) und einer Prädiktorvariable \\(x\\) (in unserem Beispiel Handy-Nutzung). Weil unser Modell versucht, die Ergebnisvariable anhand der Prädiktorvariable zu schätzen, ist die Ergebnisvariable mit einem Dach (Circumflex) versehen:\n\\[\n\\hat{y} = \\beta_0 + \\beta_1 x\n\\]\nDabei ist \\(\\beta_0\\) der Achsenabschnitt und \\(\\beta_1\\) die Steigung.\nAlternativ können wir die geschätzte Ergebnisvariable \\(\\hat{y}\\) auch durch die tatsächliche Ergebnisvariable \\(y\\) ersetzen. Dann müssen wir aber den Fehlerterm (das Residuum) \\(\\varepsilon\\) ergänzen, weil die Schätzung des linearen Modells wahrscheinlich etwas daneben liegt (also einen Vorhersagefehler macht).\n\\[\ny = \\beta_0 + \\beta_1 x + \\varepsilon\n\\]\nDie Steigung \\(\\beta_1\\) sagt uns, um wie viele Einheiten sich die Ergebnisvariable verändert, wenn die Prädiktorvariable um eine Einheit steigt. In unserem Beispiel sagt die Stegung uns also, um wie viele Punkte der Skala sich Schmerzen verändern, wenn die Handy-Nutzung um eine Stunde zunimmt.\n\nNehmen wir an, du schätzt eine einfache lineare Regression und findest heraus, dass die Steigung \\(\\beta_1\\) für dein Regressionsmodell 0.5 beträgt. Was wäre dann die korrekte Aussage?\nWenn Handy-Nutzung um eine SekundeMinuteStunde zunimmt, dann steigtsinkt der Schmerz um 50.50.5 Punkte der Schmerzskala.\nNehmen wir nun an, du findest heraus dass \\(\\beta_1 = -0.2\\) Was wäre dann die korrekte Aussage?\nWenn Handy-Nutzung um eine SekundeMinuteStunde zunimmt, dann steigtsinkt der Schmerz um 0.20.2 Punkte der Schmerzskala0.2 Ouchies.\n\nDer Achsenabschnitt \\(\\beta_0\\) sagt uns, wie hoch die Schmerzen einer Person durchschnittlich sind, welche 0 Stunden Handy-Nutzung hat.(Weil wenn \\(x = 0\\), dann gilt \\(\\hat{y} = \\beta_0 + \\beta_1 \\cdot 0 = \\beta_0\\).)\n\nErwartete Werte berechnen\nGemeinsam definieren die Steigung und der Achsenabschnitt das lineare Modell, welches den Zusammenhang zwischen \\(x\\) (Handy-Nutzung) und \\(y\\) (Schmerzen) beschreibt. Nehmen wir mal an, deine Regressionsanalyse ergibt, dass der Achsenabschnitt \\(\\beta_0\\) 2 beträgt und die Steigung \\(\\beta_1\\) 0.5. Dann lautet das lineare Modell: \\(\\hat{y} = 2 + 0.5 \\cdot x\\)\nAnhand dieses linearen Modells können wir für eine gegebene Person berechnen, wie viele Punkte auf der Schmerzskala wir für sie erwawrten, wenn wir ihre durchschnittliche Handy-Nutzung kennen.\nBerechne den erwarteten Schmerzwert \\(\\hat{y}\\) für die folgenden Werte von \\(x\\) (Handy-Nutzung in Stunden pro Tag):\n\n\nFür \\(x = 3\\): \\(\\hat{y} =\\) \nFür \\(x = 8\\): \\(\\hat{y} =\\) \nFür \\(x = 0\\): \\(\\hat{y} =\\) \n\n\n\n\nRechenweg anzeigen\n\nSetze die jeweiligen \\(x\\)-Werte in \\(\\hat{y} = 2 + 0.5 \\cdot x\\) ein:\n\n\\(x = 3\\): \\(\\hat{y} = 2 + 0.5 \\cdot 3 = 2 + 1.5 = 3.5\\)\n\\(x = 8\\): \\(\\hat{y} = 2 + 0.5 \\cdot 8 = 2 + 4 = 6\\)\n\\(x = 0\\): \\(\\hat{y} = 2 + 0.5 \\cdot 0 = 2 + 0 = 2\\)\n\nBeachte: Bei \\(x = 0\\) entspricht \\(\\hat{y}\\) genau dem Achsenabschnitt \\(\\hat{\\beta}_0\\) – das ist der erwartete Schmerzwert bei völliger Handy-Abstinenz.\n\nDas einfache lineare Modell lässt sich auch als eine Linie grafisch darstellen. Der Achsenabschnitt \\(\\beta_0\\) gibt hier an, wo die Linie die y-Achse kreuzt (von hier kommt der Name). Die Steigung \\(\\beta_1\\) gibt an, wie steil die Linie steigt (bzw. sinkt, wenn \\(\\beta_1 &lt; 0\\)).\nUnten siehst du die Darstellung des linearen Modellst für unser Beispiel. Du kannst \\(\\beta_0\\) und \\(\\beta_1\\) anpassen, um zu sehen, wie sich die Linie verändert.\n\nviewof beta0 = Inputs.range([-5, 9], {value: 2, step: 0.5, label: \"Achsenabschnitt (β₀)\"})\n\n\n\n\n\n\n\nviewof beta1 = Inputs.range([-3, 3], {value: 0.5, step: 0.1, label: \"Steigung (β₁)\"})\n\n\n\n\n\n\n\nhtml`&lt;p style=\"font-size:1.05em\"&gt;&lt;strong&gt;Aktuelles Modell:&lt;/strong&gt; ŷ = ${beta0.toFixed(1)} + ${beta1.toFixed(1)} · x&lt;/p&gt;`\n\n\n\n\n\n\n\nPlot.plot({\n  width: 500,\n  height: 350,\n  marginLeft: 50,\n  marginTop: 30, \n  marginBottom: 50,\n  style: {\n    fontSize: \"14px\"\n  }, \n  x: {label: \"Handy-Nutzung (Stunden pro Tag) →\", domain: [0, 8], grid: true},\n  y: {label: \"↑ Schmerzen\", domain: [-5, 10], grid: true},\n  marks: [\n    Plot.ruleY([0]),\n    Plot.line(\n      d3.range(0, 8.05, 0.1).map(x =&gt; ({x, y: beta0 + beta1 * x})),\n      {x: \"x\", y: \"y\", stroke: \"#2b6cb0\", strokeWidth: 3}\n    )\n  ]\n})\n\n\n\n\n\n\nFalls dir die hier gezeigten Konzepte alle klar sind, dann herzliche Gratulation! Falls nicht, empfehlen wir, den Statistik-Stoff aus dem Bachelor zu repetieren.\nWeiterführende Unterlagen:\n\nQuantitative Methoden 2: Link\nQuantitative Methoden 3: Link"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Statistik als Modellierung",
@@ -40,5 +33,152 @@
     "title": "Statistik als Modellierung",
     "section": "Vorbereitung auf die zweite Sitzung",
     "text": "Vorbereitung auf die zweite Sitzung\n➡️ Vorbereitung: Das einfache lineare Modell"
+  },
+  {
+    "objectID": "index.html#probeprüfung",
+    "href": "index.html#probeprüfung",
+    "title": "Statistik als Modellierung",
+    "section": "Probeprüfung",
+    "text": "Probeprüfung\n➡️ Probeprüfung: Regressionsanalyse"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "probepruefung-regression.html",
+    "href": "probepruefung-regression.html",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "",
+    "text": "Diese Probeprüfung hilft dir, deinen Lernstand zur linearen Regression einzuschätzen. Die Aufgabentypen entsprechen denen der Prüfung: Richtig-Falsch-Aussagen, Lückentexte und offene Fragen."
+  },
+  {
+    "objectID": "probepruefung-regression.html#ausgangsmaterial",
+    "href": "probepruefung-regression.html#ausgangsmaterial",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Ausgangsmaterial",
+    "text": "Ausgangsmaterial\n\n\n\n\n\n\nWarningFiktive Daten\n\n\n\nDer Datensatz ist simuliert. Er ist so konstruiert, dass die Ergebnisse realistisch aussehen, taugt aber nicht als inhaltliche Evidenz zum Thema Arbeitszufriedenheit.\n\n\nIn Anlehnung an das Job-Demands-Resources-Modell wurde untersucht, wie Ressourcen und Anforderungen (Demands) mit der Arbeitszufriedenheit zusammenhängen. Befragt wurden 420 Beschäftigte eines Dienstleistungsunternehmens.\n\n\n\n\n\n\n\n\n\nVariable\nRolle\nBedeutung\nWertebereich\n\n\n\n\nzufriedenheit\nKriterium (AV)\nAllgemeine Arbeitszufriedenheit, Mittelwertskala aus 6 Items\n1 = sehr unzufrieden bis 7 = sehr zufrieden\n\n\nhandlungsspielraum\nRessource (UV)\nErlebter Entscheidungs- und Handlungsspielraum, Mittelwertskala aus 5 Items\n1 bis 7\n\n\nunterstuetzung\nRessource (UV)\nSoziale Unterstützung durch die vorgesetzte Person, Mittelwertskala aus 4 Items\n1 bis 7\n\n\nueberstunden\nDemand (UV)\nÜberstunden pro Woche\n0 bis 20 Stunden\n\n\n\n\nDeskriptive Statistik\n\n\n\n\n\n\n\n\n\n\n\nzufriedenheit\nhandlungsspielraum\nunterstuetzung\nueberstunden\n\n\n\n\nN\n420\n420\n420\n420\n\n\nMittelwert\n4.63\n4.56\n4.76\n5.31\n\n\nStandardabweichung\n1.04\n1.11\n0.93\n3.39\n\n\nMinimum\n1.67\n1.40\n2.25\n0\n\n\nMaximum\n7.00\n7.00\n7.00\n16\n\n\n\n\n\nAusgabe A: Einfache lineare Regression\nKriterium zufriedenheit, Prädiktor handlungsspielraum.\n\n\n\n\n\n\nFigure 1: Ausgabe A: Einfache lineare Regression mit handlungsspielraum als einzigem Prädiktor.\n\n\n\n\n\nAusgabe B: Multiple lineare Regression\nKriterium zufriedenheit, Prädiktoren handlungsspielraum, unterstuetzung und ueberstunden.\n\n\n\n\n\n\nFigure 2: Ausgabe B: Multiple lineare Regression mit den beiden Ressourcen und den Überstunden als Prädiktoren, inklusive Überprüfung der Voraussetzungen."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-1-einfache-regression",
+    "href": "probepruefung-regression.html#aufgabe-1-einfache-regression",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 1: Einfache Regression",
+    "text": "Aufgabe 1: Einfache Regression\nBeziehe dich auf Ausgabe A.\n\n\nrichtigfalsch 18.2 % der Varianz der Arbeitszufriedenheit lassen sich durch den Handlungsspielraum aufklären.\nrichtigfalsch Die Korrelation zwischen Handlungsspielraum und Arbeitszufriedenheit beträgt r = .18.\nrichtigfalsch Für eine Person mit einem Handlungsspielraum von 5 sagt das Modell eine Arbeitszufriedenheit von 4.81 vorher.\nrichtigfalsch Der Achsenabschnitt gibt die erwartete Arbeitszufriedenheit bei einem Handlungsspielraum von 0 an und ist hier inhaltlich gut interpretierbar.\nrichtigfalsch Da p &lt; .001 ist, ist belegt, dass mehr Handlungsspielraum zu höherer Arbeitszufriedenheit führt.\n\n\n\n\nErklärung zur Lösung\n\n\nR² = .182 ist der Anteil der Varianz der Arbeitszufriedenheit, der durch den Handlungsspielraum aufgeklärt wird, also 18.2 %.\nDie Korrelation ist die Wurzel aus R²: \\(\\sqrt{.182} = .43\\). Der Wert .18 ist R², nicht r. In Ausgabe A steht die Korrelation auch direkt oben als R = 0.427. Weil es nur einen Prädiktor gibt, entspricht ihr hier auch der standardisierte Schätzer von 0.427.\nVorhersage: \\(2.806 + 0.400 \\cdot 5 = 4.81\\).\nRechnerisch stimmt die Aussage zum Achsenabschnitt, inhaltlich aber nicht: Die Skala beginnt bei 1, der kleinste beobachtete Wert liegt bei 1.40. Ein Handlungsspielraum von 0 kommt gar nicht vor, der Achsenabschnitt ist hier also ein reiner Hilfswert (Extrapolation über den Datenbereich hinaus).\nEin kleiner p-Wert sagt nichts über Kausalität. Die Daten stammen aus einer Querschnittsbefragung ohne Intervention. Wir können also nichts über die Kausalität aussagen."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-2-koeffizienten-der-multiplen-regression",
+    "href": "probepruefung-regression.html#aufgabe-2-koeffizienten-der-multiplen-regression",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 2: Koeffizienten der multiplen Regression",
+    "text": "Aufgabe 2: Koeffizienten der multiplen Regression\nBeziehe dich auf Ausgabe B.\n\n\nrichtigfalsch Pro zusätzlichem Skalenpunkt Handlungsspielraum steigt die Arbeitszufriedenheit um durchschnittlich 0.3358 Punkte, wenn Unterstützung und Überstunden konstant gehalten werden.\nrichtigfalsch Der Vergleich der unstandardisierten Koeffizienten (0.3358 gegenüber −0.0608) zeigt, dass die Überstunden den schwächsten Effekt haben.\nrichtigfalsch Der Effekt von unterstuetzung ist statistisch nicht signifikant; das 95 %-Konfidenzintervall schliesst die Null ein.\nrichtigfalsch Mehr Überstunden gehen im Mittel mit geringerer Arbeitszufriedenheit einher – bei gleichem Handlungsspielraum und gleicher Unterstützung.\nrichtigfalsch Der nicht signifikante p-Wert von unterstuetzung beweist, dass es in der Population keinen Zusammenhang gibt.\nrichtigfalsch Das 95 %-Konfidenzintervall von handlungsspielraum bedeutet, dass Werte unter 0.2486 mit den Daten gut vereinbar sind.\n\n\n\n\nErklärung zur Lösung\n\n\nDer Koeffizient einer multiplen Regression ist immer ein Ceteris-paribus-Effekt: Er gilt unter der Annahme, dass die anderen Prädiktoren unverändert bleiben.\nDie unstandardisierten Koeffizienten sind hier nicht vergleichbar: 0.3358 bezieht sich auf einen Skalenpunkt, −0.0608 auf eine Überstunde pro Woche. Die standardisierten Koeffizienten zeigen das Gegenteil der Aussage: Mit β = −.198 sind die Überstunden der zweitstärkste Prädiktor, am schwächsten ist die Unterstützung mit β = .069.\nBei unterstuetzung ist p = .141 und das Intervall reicht von −0.0258 bis 0.1809, schliesst also die Null ein. Ein nicht signifikantes Ergebnis heisst aber nur, dass die Nullhypothese nicht verworfen wird – es ist kein Beleg dafür, dass der Effekt null ist. Hier sind auch Effekte bis 0.1809 Skalenpunkte mit den Daten vereinbar.\nWerte innerhalb des Konfidenzintervalls sind mit den Daten gut vereinbar, Werte ausserhalb (also unter 0.2486) gerade nicht."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-3-modellgüte",
+    "href": "probepruefung-regression.html#aufgabe-3-modellgüte",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 3: Modellgüte",
+    "text": "Aufgabe 3: Modellgüte\nBeziehe dich auf Ausgabe B.\n\n\nrichtigfalsch Die drei Prädiktoren klären zusammen 22.6 % der Varianz der Arbeitszufriedenheit auf.\nrichtigfalsch R² = .226 heisst, dass 22.6 % der Befragten korrekt vorhergesagt werden.\nrichtigfalsch Das adjustierte R² ist kleiner als R², weil es die Anzahl der Prädiktoren berücksichtigt.\nrichtigfalsch Der F-Test prüft, ob das Modell insgesamt mehr Varianz aufklärt, als bei reinen Zufallsvariablen zu erwarten wäre.\nrichtigfalsch Auch bei der multiplen Regression entspricht R² dem quadrierten Korrelationskoeffizienten zwischen einem einzelnen Prädiktor und dem Kriterium.\n\n\n\n\nErklärung zur Lösung\n\nR² bezieht sich immer auf Varianz, nicht auf Personen oder Fälle. Bei der einfachen Regression entspricht R² tatsächlich der quadrierten Korrelation zwischen UV und AV (Ausgabe A: \\(0.427^2 = 0.182\\)). Bei der multiplen Regression ist R² dagegen die quadrierte Korrelation zwischen den beobachteten und den vorhergesagten Werten (multiples R = .476)."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-4-voraussetzungen-und-diagnostik",
+    "href": "probepruefung-regression.html#aufgabe-4-voraussetzungen-und-diagnostik",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 4: Voraussetzungen und Diagnostik",
+    "text": "Aufgabe 4: Voraussetzungen und Diagnostik\n\n\nrichtigfalsch Die abhängige Variable muss normalverteilt sein.\nrichtigfalsch Die Residuen sollen näherungsweise normalverteilt sein.\nrichtigfalsch Mit VIF-Werten von 1.06 bis 1.21 ist Multikollinearität in Ausgabe B unproblematisch.\nrichtigfalsch Die Durbin-Watson-Statistik von 2.02 spricht gegen eine Abhängigkeit der Fehlerwerte.\nrichtigfalsch Heteroskedastizität verzerrt in erster Linie die geschätzten Regressionskoeffizienten.\nrichtigfalsch Ein trichterförmiges Muster im Diagramm der Residuen gegen die vorhergesagten Werte deutet auf eine Verletzung der Homoskedastizität hin.\n\n\n\n\nErklärung zur Lösung\n\nNormalverteilt sein sollen nur die Fehlerwerte (Residuen), weder die Prädiktoren noch das Kriterium. Als Faustregel für Multikollinearität gilt VIF &lt; 10, für die Durbin-Watson-Statistik ein Wert zwischen 1 und 3.\nSowohl eine verletzte Normalverteilung der Residuen als auch Heteroskedastizität verfälschen nicht die Koeffizienten, sondern deren Standardfehler – und damit p-Werte und Konfidenzintervalle."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-5-grundlagen-und-vorgehen",
+    "href": "probepruefung-regression.html#aufgabe-5-grundlagen-und-vorgehen",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 5: Grundlagen und Vorgehen",
+    "text": "Aufgabe 5: Grundlagen und Vorgehen\n\n\nrichtigfalsch OLS bestimmt die Gerade mit der kleinsten Summe der quadrierten Residuen.\nrichtigfalsch Ein Residuum ist der tatsächliche (beobachtete) Wert minus den vorhergesagten Wert.\nrichtigfalsch Schrittweise Verfahren (Stepwise Regression) sind das empfohlene Standardvorgehen zur Auswahl der Prädiktoren.\nrichtigfalsch Bei verletzter Normalverteilung der Residuen ist Bootstrapping eine mögliche Vorgehensweise.\n\n\n\n\nErklärung zur Lösung\n\nEin positives Residuum bedeutet, dass die Person zufriedener ist, als das Modell vorhersagt; ein negatives Residuum, dass sie unzufriedener ist. Die Regressionsgerade minimiert die Summe der quadrierten Residuen – dadurch fallen grosse Abweichungen stärker ins Gewicht als kleine."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-6-ergebnisse-beschreiben",
+    "href": "probepruefung-regression.html#aufgabe-6-ergebnisse-beschreiben",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 6: Ergebnisse beschreiben",
+    "text": "Aufgabe 6: Ergebnisse beschreiben\nBeziehe dich auf Ausgabe B.\n\nDas Gesamtmodell klärt  % der Varianz der Arbeitszufriedenheit auf. Der Prädiktor mit dem stärksten Effekt ist handlungsspielraumunterstuetzungueberstunden. Der Koeffizient bei ueberstunden bedeutet, dass die Arbeitszufriedenheit pro zusätzlicher Überstunde pro Woche um  Skalenpunkte steigtsinkt."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-7-werte-vorhersagen",
+    "href": "probepruefung-regression.html#aufgabe-7-werte-vorhersagen",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 7: Werte vorhersagen",
+    "text": "Aufgabe 7: Werte vorhersagen\nEine Person gibt einen Handlungsspielraum von 5 an, eine Unterstützung von 4 und leistet 6 Überstunden pro Woche. Verwende Ausgabe B.\n\nDie Regressionsgleichung lautet: \\(\\hat{y} =\\)  \\(+\\)  \\(\\cdot \\text{handlungsspielraum} + 0.0776 \\cdot \\text{unterstuetzung} - 0.0608 \\cdot \\text{ueberstunden}\\)\nDie vorhergesagte Arbeitszufriedenheit beträgt .\n\n\n\nRechenweg anzeigen\n\n\\[\n\\hat{y} = 3.05 + 0.336 \\cdot 5 + 0.0776 \\cdot 4 - 0.0608 \\cdot 6\n\\] \\[\n\\hat{y} = 3.05 + 1.68 + 0.31 - 0.36 = 4.68\n\\]\nBeachte: Auch der nicht signifikante Prädiktor unterstuetzung geht in die Vorhersage ein, solange er im Modell enthalten ist."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-8-residuum",
+    "href": "probepruefung-regression.html#aufgabe-8-residuum",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 8: Residuum",
+    "text": "Aufgabe 8: Residuum\nDie Person aus Aufgabe 7 gibt tatsächlich eine Arbeitszufriedenheit von 5.33 an.\n\nIhr Residuum beträgt  Skalenpunkte. Die Person ist also zufriedenerunzufriedener als vom Modell vorhergesagt.\n\n\n\nRechenweg anzeigen\n\nDas Residuum ist der tatsächliche (beobachtete) Wert minus den vorhergesagten Wert: \\[\ne = y - \\hat{y} = 5.33 - 4.68 = 0.65\n\\] Ein positives Residuum heisst: Die Person liegt über der Regressionsgeraden, ist also zufriedener, als das Modell erwarten lässt."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-9-standardisierte-koeffizienten",
+    "href": "probepruefung-regression.html#aufgabe-9-standardisierte-koeffizienten",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 9: Standardisierte Koeffizienten",
+    "text": "Aufgabe 9: Standardisierte Koeffizienten\n\nStandardisierte Koeffizienten verwenden für alle Variablen die  als Einheit. Sie geben an, um wie viele  sich das Kriterium verändert, wenn sich der Prädiktor um eine Einheit dieser Grösse verändert und alle anderen Prädiktoren unverändert bleibengleich stark steigenaus dem Modell entfernt werden.\n\n\n\nNachgerechnet\n\nDu kannst die standardisierten Koeffizienten aus der deskriptiven Statistik nachrechnen: \\[\n\\beta_j = b_j \\cdot \\frac{s_{x_j}}{s_y} = 0.3358 \\cdot \\frac{1.11}{1.04} = 0.3586\n\\]"
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-10-voraussetzungen-prüfen-in-jamovi",
+    "href": "probepruefung-regression.html#aufgabe-10-voraussetzungen-prüfen-in-jamovi",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 10: Voraussetzungen prüfen in Jamovi",
+    "text": "Aufgabe 10: Voraussetzungen prüfen in Jamovi\n\nDie Linearität prüfen wir über einen ScatterplotBoxplotQ-Q-Plot mit einer -Linie. Ob die Residuen normalverteilt sind, sehen wir im ScatterplotHistogramm der AVQ-Q-Plot oder Histogramm der Residuen. Die Unabhängigkeit der Fehlerwerte prüfen wir mit der -Statistik.\n\n\n\nWo finde ich das in Jamovi?\n\n\nScatterplot mit LOESS: Analysen &gt; JJStatsPlot &gt; Scatter Plot\nQ-Q-Plot, Residuendiagramme, Durbin-Watson und Kollinearitätsstatistik: direkt im Menü der linearen Regression unter «Annahmeprüfungen»\nResiduen speichern (z. B. für ein Histogramm): im Menü der Regression unter «Speichern» die «Residuen» anwählen"
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-11-begriffe-der-regressionsgleichung",
+    "href": "probepruefung-regression.html#aufgabe-11-begriffe-der-regressionsgleichung",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 11: Begriffe der Regressionsgleichung",
+    "text": "Aufgabe 11: Begriffe der Regressionsgleichung\nGegeben ist die Gleichung \\(y = b_0 + b_1 x_1 + b_2 x_2 + e\\).\n\n\\(b_0\\) heisst AchsenabschnittSteigungResiduum, \\(b_1\\) und \\(b_2\\) heissen AchsenabschnitteRegressionskoeffizientenStandardfehler und \\(e\\) steht für das . Der Koeffizient \\(b_1\\) gibt den Effekt von \\(x_1\\) unter sonst gleichen Bedingungen an, lateinisch ."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-12-ergebnisbericht-formulieren",
+    "href": "probepruefung-regression.html#aufgabe-12-ergebnisbericht-formulieren",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 12: Ergebnisbericht formulieren",
+    "text": "Aufgabe 12: Ergebnisbericht formulieren\nFormuliere auf Basis von Ausgabe B einen Ergebnisabschnitt von vier bis sechs Sätzen, wie er in einer Arbeit stehen könnte. Gehe auf das Gesamtmodell und auf alle drei Prädiktoren ein.\n\n\nMusterlösung\n\nDas Modell klärt einen signifikanten Anteil der Varianz der Arbeitszufriedenheit auf, R² = .226, adj. R² = .221, F(3, 416) = 40.6, p &lt; .001. Der Handlungsspielraum hängt positiv mit der Arbeitszufriedenheit zusammen: Pro zusätzlichem Skalenpunkt steigt sie bei konstant gehaltenen übrigen Prädiktoren um durchschnittlich 0.34 Punkte, 95 %-CI [0.25, 0.42], p &lt; .001. Die Überstunden hängen negativ mit der Arbeitszufriedenheit zusammen, b = −0.06 Punkte pro Überstunde, 95 %-CI [−0.09, −0.03], p &lt; .001. [Optional, zur Veranschaulichung der absoluten Effektstärke]: Über eine Spannweite von 16 Überstunden entspricht das rund einem ganzen Skalenpunkt. Für die soziale Unterstützung durch die vorgesetzte Person zeigte sich kein signifikanter Zusammenhang, b = 0.08, p = .141. [Optional, zur Veranschaulichung des Konfidenzintervalls:] Das Konfidenzintervall schliesst allerdings auch Effekte bis 0.18 Punkte ein. Anhand der standardisierten Koeffizienten ist der Handlungsspielraum der stärkste Prädiktor (β = .36), gefolgt von den Überstunden (β = −.20).\nDarauf kommt es an\n\nGesamtmodell mit R², adjustiertem R² und ggf. auch F-Test berichtet\nalle drei Koeffizienten in ihren Originaleinheiten interpretiert, inklusive Ceteris-paribus-Bedingung\nSignifikanzen korrekt eingeordnet\nnicht signifikanter Prädiktor korrekt formuliert, also ohne die Aussage, es gebe keinen Zusammenhang (weil: absence of evidence is not evidence of absence!)"
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-13-eine-verletzte-voraussetzung",
+    "href": "probepruefung-regression.html#aufgabe-13-eine-verletzte-voraussetzung",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 13: Eine verletzte Voraussetzung",
+    "text": "Aufgabe 13: Eine verletzte Voraussetzung\nIm Diagramm der Residuen gegen die vorhergesagten Werte zeigt sich ein deutlich trichterförmiges Muster: Bei hohen vorhergesagten Werten streuen die Residuen stark, bei tiefen kaum.\n\nWelche Voraussetzung ist verletzt?\nWelche Ergebnisse der Regression sind betroffen und welche nicht?\nNenne eine mögliche Vorgehensweise.\n\n\n\nMusterlösung\n\n\nDie Homoskedastizität. Die Varianz der Residuen ist nicht über den gesamten Wertebereich gleich.\nDie geschätzten Koeffizienten bleiben unverzerrt. Verfälscht werden die Standardfehler und damit alles, was darauf aufbaut: t-Werte, p-Werte und Konfidenzintervalle. Aussagen zur Signifikanz sind also nicht mehr vertrauenswürdig.\nBootstrapping (alternativ: robuste Standardfehler oder eine Transformation der abhängigen Variable)."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-14-assoziation-oder-kausalität",
+    "href": "probepruefung-regression.html#aufgabe-14-assoziation-oder-kausalität",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 14: Assoziation oder Kausalität",
+    "text": "Aufgabe 14: Assoziation oder Kausalität\nAus Ausgabe A folgt: «Die Arbeitszufriedenheit steigt durchschnittlich um 0.40 Punkte pro zusätzlichem Skalenpunkt Handlungsspielraum.» Zwei Personen interpretieren das unterschiedlich:\n\nPerson A: Wenn wir zwei Beschäftigte vergleichen und Person B erlebt einen Skalenpunkt mehr Handlungsspielraum, dann erwarten wir für B eine um 0.40 Punkte höhere Arbeitszufriedenheit.\nPerson B: Wenn wir den Arbeitsplatz einer Person so umgestalten, dass sie einen Skalenpunkt mehr Handlungsspielraum erlebt, dann steigt ihre Arbeitszufriedenheit um 0.40 Punkte.\n\nWelche Interpretation ist durch die Analyse gedeckt? Begründe und nenne einen konkreten Grund, weshalb die andere problematisch ist.\n\n\nMusterlösung\n\nGedeckt ist die Interpretation von Person A. Die Regression beschreibt einen Vergleich zwischen Beobachtungen: Beschäftigte mit mehr erlebtem Handlungsspielraum sind im Durchschnitt zufriedener.\nPerson B formuliert eine kausale und kontrafaktische Aussage darüber, was passiert, wenn man bei derselben Person eingreift. Das lässt sich aus Querschnittsdaten ohne Intervention nicht schliessen. Mögliche konkrete Gründe:\n\nDrittvariablen: Hierarchiestufe, Führungsqualität, Art der Tätigkeit oder Persönlichkeitsmerkmale (z. B. negative Affektivität) beeinflussen beides.\nUmgekehrte Kausalität: Wer zufrieden ist, nimmt den eigenen Spielraum möglicherweise grösser wahr, oder bekommt tatsächlich mehr Spielraum zugestanden.\nCommon-Method-Bias: Beide Variablen stammen aus derselben Selbstauskunft zum selben Zeitpunkt."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-15-zwei-prädiktoren-vergleichen",
+    "href": "probepruefung-regression.html#aufgabe-15-zwei-prädiktoren-vergleichen",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 15: Zwei Prädiktoren vergleichen",
+    "text": "Aufgabe 15: Zwei Prädiktoren vergleichen\nEin Student schreibt: «Die Überstunden sind der unwichtigste Prädiktor, weil ihr Koeffizient mit −0.0608 den kleinsten Betrag hat.» Nimm Stellung und begründe mit den Zahlen aus Ausgabe B.\n\n\nMusterlösung\n\nDie Aussage ist nicht haltbar. Unstandardisierte Koeffizienten hängen von der Einheit und der Streuung des jeweiligen Prädiktors ab. Beim Handlungsspielraum bedeutet «eine Einheit» einen Skalenpunkt auf einer siebenstufigen Skala (SD = 1.11), bei den Überstunden eine einzelne Stunde pro Woche bei einer Streuung von 3.39 Stunden. Über den beobachteten Bereich von 0 bis 16 Überstunden summiert sich der Effekt auf \\(16 \\cdot (-0.0608) = -0.97\\) Skalenpunkte.\nDer Vergleich gelingt über die standardisierten Koeffizienten: β = .3586 für den Handlungsspielraum, β = −.1980 für die Überstunden und nur β = .0693 für die Unterstützung. Die Überstunden sind also der zweitstärkste Prädiktor, nicht der schwächste."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-16-regression-oder-korrelation",
+    "href": "probepruefung-regression.html#aufgabe-16-regression-oder-korrelation",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 16: Regression oder Korrelation",
+    "text": "Aufgabe 16: Regression oder Korrelation\nWelche Informationen liefert eine einfache lineare Regression, die eine Produkt-Moment-Korrelation nicht liefert? Nenne zwei Punkte und erkläre, wann man deshalb die Regression wählt.\n\n\nMusterlösung\n\n\nDie Regression liefert eine Gleichung mit Achsenabschnitt und Steigung in den Originaleinheiten. Sie quantifiziert den Zusammenhang also inhaltlich («0.40 Skalenpunkte Zufriedenheit pro Skalenpunkt Handlungsspielraum») und erlaubt konkrete Vorhersagen.\nDie Regression lässt sich um weitere Prädiktoren erweitern. Damit können Störvariablen kontrolliert und Effekte ceteris paribus geschätzt werden.\n\nDie Korrelation liefert nur Richtung und Stärke des Zusammenhangs und ist symmetrisch, unterscheidet also nicht zwischen UV und AV. Die Regression wählt man deshalb immer dann, wenn eine gerichtete Fragestellung vorliegt, wenn vorhergesagt werden bzw. der Zusammenhang anhand konkreter Einheiten quantifiziert werden soll oder wenn weitere Variablen berücksichtigt werden müssen."
+  },
+  {
+    "objectID": "probepruefung-regression.html#aufgabe-17-schrittweise-regression",
+    "href": "probepruefung-regression.html#aufgabe-17-schrittweise-regression",
+    "title": "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1",
+    "section": "Aufgabe 17: Schrittweise Regression",
+    "text": "Aufgabe 17: Schrittweise Regression\nEine Kollegin schlägt vor, aus 20 verfügbaren Variablen per schrittweiser Regression automatisch die besten Prädiktoren auswählen zu lassen. Was entgegnest du? Nenne zwei Gründe und einen Alternativvorschlag.\n\n\nMusterlösung\n\n\nSchrittweise Verfahren liefern instabile Resultate. Welche Variablen im Modell landen, hängt stark von Zufallsschwankungen der Stichprobe ab; eine neue Stichprobe führt oft zu einem anderen Modell.\nDie resultierenden p-Werte und Konfidenzintervalle dürfen nicht wie üblich interpretiert werden, weil dieselben Daten sowohl für die Auswahl der Variablen als auch für deren Testung verwendet wurden.\n\nAlternative: theoriegeleitete Auswahl der Prädiktoren mit Einschluss (ENTER), gestützt auf bestehende Literatur und inhaltliche Überlegungen. Wird bewusst explorativ gearbeitet, muss das als solches deklariert und das Ergebnis idealerweise an neuen Daten überprüft werden.\n\n\n\n\n\n\n\n\nTipUnd jetzt?\n\n\n\nWenn dir einzelne Aufgaben schwergefallen sind, lohnt sich ein Blick in die entsprechenden Folien der Sitzungen zur Regressionsanalyse. Inhalte aus den Bachelor-Vorlesungen finden sich unter Quantitative Methoden 2 oder Quantitative Methoden 3"
   }
 ]

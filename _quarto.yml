@@ -3,6 +3,7 @@ project:
   output-dir: docs
   resources:
     - images/
+    - daten/
 
 website:
   title: "Statistik als Modellierung"
@@ -12,6 +13,8 @@ website:
         text: "Start"
       - href: vorbereitung-lineares-modell.qmd
         text: "Vorbereitung: Lineares Modell"
+      - href: probepruefung-regression.qmd
+        text: "Probeprüfung: Regression"
 
 format:
   html:
