@@ -6,3 +6,6 @@
 
 /.quarto/
 **/*.quarto_ipynb
+
+# wird von der GitLab-Pipeline aus docs/ erzeugt
+/public/

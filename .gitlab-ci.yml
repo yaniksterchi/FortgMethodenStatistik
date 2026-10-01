@@ -1,7 +1,9 @@
 pages:
   stage: deploy
   script:
-    - echo "Publishing pre-rendered site"
+    # Quarto rendert nach docs/ (output-dir in _quarto.yml).
+    # GitLab Pages veroeffentlicht ausschliesslich den Ordner public/.
+    - rm -rf public && cp -r docs public
   artifacts:
     paths:
       - public
