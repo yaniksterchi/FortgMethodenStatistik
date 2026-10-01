@@ -21,7 +21,7 @@ Richtig-Falsch-Aussagen, Lückentexte und offene Fragen.
 - Du brauchst für diese Probeprüfung **kein Jamovi**. Alle nötigen Ergebnisse
   stehen in den Ausgaben unten. Wenn du die Analysen selbst nachvollziehen
   möchtest, kannst du den Datensatz herunterladen:
-  [arbeitszufriedenheit.csv](daten/arbeitszufriedenheit.csv).
+  [arbeitszufriedenheit.csv](daten/arbeitszufriedenheit.csv){download="arbeitszufriedenheit.csv"}.
 - Rechne mit den Werten, wie sie in den Jamovi-Ausgaben stehen. Kleine
   Abweichungen durch Rundung sind bei den Antworten berücksichtigt.Verwende 
   einen Punkt "." als Dezimalzeichen. 

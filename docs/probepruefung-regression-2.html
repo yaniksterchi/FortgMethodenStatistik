@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 2 – Statistik als Modellierung</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="include/webex.css">
+<link rel="stylesheet" href="include/image-quiz.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Statistik als Modellierung</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Start</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./vorbereitung-lineares-modell.html"> 
+<span class="menu-text">Vorbereitung: Lineares Modell</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./probepruefung-regression.html"> 
+<span class="menu-text">Lernkontrolle: Regression 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./probepruefung-regression-2.html" aria-current="page"> 
+<span class="menu-text">Lernkontrolle: Regression 2</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Auf dieser Seite</h2>
+   
+  <ul>
+  <li><a href="#ausgangsmaterial" id="toc-ausgangsmaterial" class="nav-link active" data-scroll-target="#ausgangsmaterial">Ausgangsmaterial</a>
+  <ul class="collapse">
+  <li><a href="#ausgabe-c-regression-mit-einer-dummy-variable" id="toc-ausgabe-c-regression-mit-einer-dummy-variable" class="nav-link" data-scroll-target="#ausgabe-c-regression-mit-einer-dummy-variable">Ausgabe C: Regression mit einer Dummy-Variable</a></li>
+  <li><a href="#ausgabe-d-hierarchische-regression" id="toc-ausgabe-d-hierarchische-regression" class="nav-link" data-scroll-target="#ausgabe-d-hierarchische-regression">Ausgabe D: Hierarchische Regression</a></li>
+  <li><a href="#ausgabe-e-ausreisseranalyse-zu-modell-2" id="toc-ausgabe-e-ausreisseranalyse-zu-modell-2" class="nav-link" data-scroll-target="#ausgabe-e-ausreisseranalyse-zu-modell-2">Ausgabe E: Ausreisseranalyse zu Modell 2</a></li>
+  <li><a href="#ausgabe-f-ein-zusätzlicher-prädiktor" id="toc-ausgabe-f-ein-zusätzlicher-prädiktor" class="nav-link" data-scroll-target="#ausgabe-f-ein-zusätzlicher-prädiktor">Ausgabe F: Ein zusätzlicher Prädiktor</a></li>
+  </ul></li>
+  <li><a href="#teil-1-richtig-oder-falsch" id="toc-teil-1-richtig-oder-falsch" class="nav-link" data-scroll-target="#teil-1-richtig-oder-falsch">Teil 1: Richtig oder falsch?</a>
+  <ul class="collapse">
+  <li><a href="#aufgabe-1-dummy-variable-mit-zwei-kategorien" id="toc-aufgabe-1-dummy-variable-mit-zwei-kategorien" class="nav-link" data-scroll-target="#aufgabe-1-dummy-variable-mit-zwei-kategorien">Aufgabe 1: Dummy-Variable mit zwei Kategorien</a></li>
+  <li><a href="#aufgabe-2-kategoriale-variable-mit-vier-kategorien" id="toc-aufgabe-2-kategoriale-variable-mit-vier-kategorien" class="nav-link" data-scroll-target="#aufgabe-2-kategoriale-variable-mit-vier-kategorien">Aufgabe 2: Kategoriale Variable mit vier Kategorien</a></li>
+  <li><a href="#aufgabe-3-hierarchische-regression" id="toc-aufgabe-3-hierarchische-regression" class="nav-link" data-scroll-target="#aufgabe-3-hierarchische-regression">Aufgabe 3: Hierarchische Regression</a></li>
+  <li><a href="#aufgabe-4-ausreisser" id="toc-aufgabe-4-ausreisser" class="nav-link" data-scroll-target="#aufgabe-4-ausreisser">Aufgabe 4: Ausreisser</a></li>
+  <li><a href="#aufgabe-5-suppression-und-messfehler" id="toc-aufgabe-5-suppression-und-messfehler" class="nav-link" data-scroll-target="#aufgabe-5-suppression-und-messfehler">Aufgabe 5: Suppression und Messfehler</a></li>
+  </ul></li>
+  <li><a href="#teil-2-lückentexte" id="toc-teil-2-lückentexte" class="nav-link" data-scroll-target="#teil-2-lückentexte">Teil 2: Lückentexte</a>
+  <ul class="collapse">
+  <li><a href="#aufgabe-6-gruppenmittelwerte-aus-der-regression" id="toc-aufgabe-6-gruppenmittelwerte-aus-der-regression" class="nav-link" data-scroll-target="#aufgabe-6-gruppenmittelwerte-aus-der-regression">Aufgabe 6: Gruppenmittelwerte aus der Regression</a></li>
+  <li><a href="#aufgabe-7-dummy-kodierung" id="toc-aufgabe-7-dummy-kodierung" class="nav-link" data-scroll-target="#aufgabe-7-dummy-kodierung">Aufgabe 7: Dummy-Kodierung</a></li>
+  <li><a href="#aufgabe-8-vorhersage-mit-dummy-variablen" id="toc-aufgabe-8-vorhersage-mit-dummy-variablen" class="nav-link" data-scroll-target="#aufgabe-8-vorhersage-mit-dummy-variablen">Aufgabe 8: Vorhersage mit Dummy-Variablen</a></li>
+  <li><a href="#aufgabe-9-hierarchische-regression" id="toc-aufgabe-9-hierarchische-regression" class="nav-link" data-scroll-target="#aufgabe-9-hierarchische-regression">Aufgabe 9: Hierarchische Regression</a></li>
+  <li><a href="#aufgabe-10-ausreisser-kennwerte" id="toc-aufgabe-10-ausreisser-kennwerte" class="nav-link" data-scroll-target="#aufgabe-10-ausreisser-kennwerte">Aufgabe 10: Ausreisser-Kennwerte</a></li>
+  <li><a href="#aufgabe-11-stichprobengrösse-planen" id="toc-aufgabe-11-stichprobengrösse-planen" class="nav-link" data-scroll-target="#aufgabe-11-stichprobengrösse-planen">Aufgabe 11: Stichprobengrösse planen</a></li>
+  </ul></li>
+  <li><a href="#teil-3-offene-fragen" id="toc-teil-3-offene-fragen" class="nav-link" data-scroll-target="#teil-3-offene-fragen">Teil 3: Offene Fragen</a>
+  <ul class="collapse">
+  <li><a href="#aufgabe-12-abteilungsunterschiede-interpretieren" id="toc-aufgabe-12-abteilungsunterschiede-interpretieren" class="nav-link" data-scroll-target="#aufgabe-12-abteilungsunterschiede-interpretieren">Aufgabe 12: Abteilungsunterschiede interpretieren</a></li>
+  <li><a href="#aufgabe-13-referenzkategorie-wählen" id="toc-aufgabe-13-referenzkategorie-wählen" class="nav-link" data-scroll-target="#aufgabe-13-referenzkategorie-wählen">Aufgabe 13: Referenzkategorie wählen</a></li>
+  <li><a href="#aufgabe-14-ein-einflussreicher-ausreisser" id="toc-aufgabe-14-ein-einflussreicher-ausreisser" class="nav-link" data-scroll-target="#aufgabe-14-ein-einflussreicher-ausreisser">Aufgabe 14: Ein einflussreicher Ausreisser</a></li>
+  <li><a href="#aufgabe-15-kontrollvariablen-und-messfehler" id="toc-aufgabe-15-kontrollvariablen-und-messfehler" class="nav-link" data-scroll-target="#aufgabe-15-kontrollvariablen-und-messfehler">Aufgabe 15: Kontrollvariablen und Messfehler</a></li>
+  <li><a href="#aufgabe-16-messfehler-in-prädiktor-und-kriterium" id="toc-aufgabe-16-messfehler-in-prädiktor-und-kriterium" class="nav-link" data-scroll-target="#aufgabe-16-messfehler-in-prädiktor-und-kriterium">Aufgabe 16: Messfehler in Prädiktor und Kriterium</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Diese Lernkontrolle deckt die Themen der dritten Sitzung ab: Ausreisser, Dummy-Variablen, hierarchische Regression, Suppression und Messfehler in den Prädiktoren. Sie ist gleich aufgebaut wie die <a href="./probepruefung-regression.html">Lernkontrolle zu Teil 1</a>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>So arbeitest du mit dieser Seite
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Beantworte die Fragen zuerst selbstständig, bevor du die Lösungen aufklappst.</li>
+<li>Bei den Richtig-Falsch- und Lückentext-Aufgaben erhältst du direkt eine Rückmeldung: richtige Antworten werden grün, falsche rot markiert.</li>
+<li>Bei den offenen Fragen vergleichst du deine Antwort mit der Musterlösung.</li>
+<li>Du brauchst <strong>kein Jamovi</strong>. Alle nötigen Ergebnisse stehen in den Ausgaben unten. Wenn du die Analysen selbst nachvollziehen möchtest, kannst du den Datensatz herunterladen: <a href="daten/arbeitszufriedenheit.csv" download="arbeitszufriedenheit.csv">arbeitszufriedenheit.csv</a>.</li>
+<li>Rechne mit den Werten, wie sie in den Jamovi-Ausgaben stehen. Kleine Abweichungen durch Rundung sind bei den Antworten berücksichtigt.</li>
+</ul>
+</div>
+</div>
+<section id="ausgangsmaterial" class="level2">
+<h2 class="anchored" data-anchor-id="ausgangsmaterial">Ausgangsmaterial</h2>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Fiktive Daten
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Der Datensatz ist simuliert. Er ist so konstruiert, dass die Ergebnisse realistisch aussehen, taugt aber nicht als inhaltliche Evidenz zum Thema Arbeitszufriedenheit.</p>
+</div>
+</div>
+<p>Es ist derselbe Datensatz wie in Teil 1 (420 Beschäftigte eines Dienstleistungsunternehmens, Arbeitszufriedenheit auf einer Skala von 1 bis 7), ergänzt um drei weitere Variablen.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Art</th>
+<th style="text-align: left;">Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>homeoffice</code></td>
+<td style="text-align: left;">dichotom, 0/1</td>
+<td style="text-align: left;">Arbeitet die Person mindestens zwei Tage pro Woche im Homeoffice? 0 = nein, 1 = ja</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>abteilung</code></td>
+<td style="text-align: left;">nominal, 4 Kategorien</td>
+<td style="text-align: left;">Kundendienst, Produktion, Verwaltung, Vertrieb</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>zustimmungstendenz</code></td>
+<td style="text-align: left;">1 bis 7</td>
+<td style="text-align: left;">Allgemeine Tendenz, Fragebogenitems zuzustimmen (Akquieszenz), erhoben über eine Kontrollskala aus 4 inhaltsfremden Items</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Häufigkeiten und Gruppenmittelwerte der Arbeitszufriedenheit</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Gruppe</th>
+<th style="text-align: right;">N</th>
+<th style="text-align: right;">Mittelwert</th>
+<th style="text-align: right;">SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">kein Homeoffice (<code>homeoffice</code> = 0)</td>
+<td style="text-align: right;">224</td>
+<td style="text-align: right;">4.346</td>
+<td style="text-align: right;">0.960</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Homeoffice (<code>homeoffice</code> = 1)</td>
+<td style="text-align: right;">196</td>
+<td style="text-align: right;">4.957</td>
+<td style="text-align: right;">1.036</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Produktion</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">4.381</td>
+<td style="text-align: right;">0.945</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kundendienst</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">4.477</td>
+<td style="text-align: right;">0.977</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Verwaltung</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">5.166</td>
+<td style="text-align: right;">1.036</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vertrieb</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">4.761</td>
+<td style="text-align: right;">1.113</td>
+</tr>
+</tbody>
+</table>
+<section id="ausgabe-c-regression-mit-einer-dummy-variable" class="level3">
+<h3 class="anchored" data-anchor-id="ausgabe-c-regression-mit-einer-dummy-variable">Ausgabe C: Regression mit einer Dummy-Variable</h3>
+<p>Kriterium <code>zufriedenheit</code>, einziger Prädiktor <code>homeoffice</code>.</p>
+<p><strong>Güte der Modellanpassung</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modell</th>
+<th style="text-align: right;">R</th>
+<th style="text-align: right;">R²</th>
+<th style="text-align: right;">adj. R²</th>
+<th style="text-align: right;">F</th>
+<th style="text-align: right;">df1</th>
+<th style="text-align: right;">df2</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">0.293</td>
+<td style="text-align: right;">0.0861</td>
+<td style="text-align: right;">0.0839</td>
+<td style="text-align: right;">39.4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">418</td>
+<td style="text-align: right;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Modellkoeffizienten – zufriedenheit</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 7%">
+<col style="width: 9%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Prädiktor</th>
+<th style="text-align: right;">Schätzung</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">CI untere</th>
+<th style="text-align: right;">CI obere</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">stand. Schätzer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Interzept)</td>
+<td style="text-align: right;">4.35</td>
+<td style="text-align: right;">0.0666</td>
+<td style="text-align: right;">4.21</td>
+<td style="text-align: right;">4.48</td>
+<td style="text-align: right;">65.3</td>
+<td style="text-align: right;">&lt; .001</td>
+<td style="text-align: right;">–</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">homeoffice</td>
+<td style="text-align: right;">0.611</td>
+<td style="text-align: right;">0.0975</td>
+<td style="text-align: right;">0.420</td>
+<td style="text-align: right;">0.803</td>
+<td style="text-align: right;">6.27</td>
+<td style="text-align: right;">&lt; .001</td>
+<td style="text-align: right;">0.293</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ausgabe-d-hierarchische-regression" class="level3">
+<h3 class="anchored" data-anchor-id="ausgabe-d-hierarchische-regression">Ausgabe D: Hierarchische Regression</h3>
+<p>Block 1: <code>handlungsspielraum</code>, <code>unterstuetzung</code>, <code>ueberstunden</code>. Block 2: zusätzlich <code>abteilung</code> (Referenzniveau: Produktion).</p>
+<p><strong>Güte der Modellanpassung</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modell</th>
+<th style="text-align: right;">R</th>
+<th style="text-align: right;">R²</th>
+<th style="text-align: right;">adj. R²</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">0.476</td>
+<td style="text-align: right;">0.226</td>
+<td style="text-align: right;">0.221</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">0.555</td>
+<td style="text-align: right;">0.308</td>
+<td style="text-align: right;">0.297</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Modellvergleich</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Vergleich</th>
+<th style="text-align: right;">ΔR²</th>
+<th style="text-align: right;">F</th>
+<th style="text-align: right;">df1</th>
+<th style="text-align: right;">df2</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Modell 1 – Modell 2</td>
+<td style="text-align: right;">0.0811</td>
+<td style="text-align: right;">16.1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">413</td>
+<td style="text-align: right;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Modellkoeffizienten Modell 2 – zufriedenheit</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Prädiktor</th>
+<th style="text-align: right;">Schätzung</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">CI untere</th>
+<th style="text-align: right;">CI obere</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Interzept)</td>
+<td style="text-align: right;">2.80</td>
+<td style="text-align: right;">0.284</td>
+<td style="text-align: right;">2.24</td>
+<td style="text-align: right;">3.36</td>
+<td style="text-align: right;">9.88</td>
+<td style="text-align: right;">&lt; .001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">handlungsspielraum</td>
+<td style="text-align: right;">0.339</td>
+<td style="text-align: right;">0.0423</td>
+<td style="text-align: right;">0.255</td>
+<td style="text-align: right;">0.422</td>
+<td style="text-align: right;">8.00</td>
+<td style="text-align: right;">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">unterstuetzung</td>
+<td style="text-align: right;">0.0733</td>
+<td style="text-align: right;">0.0500</td>
+<td style="text-align: right;">−0.0249</td>
+<td style="text-align: right;">0.172</td>
+<td style="text-align: right;">1.47</td>
+<td style="text-align: right;">.143</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ueberstunden</td>
+<td style="text-align: right;">−0.0582</td>
+<td style="text-align: right;">0.0130</td>
+<td style="text-align: right;">−0.0838</td>
+<td style="text-align: right;">−0.0327</td>
+<td style="text-align: right;">−4.48</td>
+<td style="text-align: right;">&lt; .001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">abteilung: Kundendienst – Produktion</td>
+<td style="text-align: right;">0.116</td>
+<td style="text-align: right;">0.108</td>
+<td style="text-align: right;">−0.0963</td>
+<td style="text-align: right;">0.327</td>
+<td style="text-align: right;">1.07</td>
+<td style="text-align: right;">.284</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">abteilung: Vertrieb – Produktion</td>
+<td style="text-align: right;">0.309</td>
+<td style="text-align: right;">0.134</td>
+<td style="text-align: right;">0.0464</td>
+<td style="text-align: right;">0.572</td>
+<td style="text-align: right;">2.31</td>
+<td style="text-align: right;">.021</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">abteilung: Verwaltung – Produktion</td>
+<td style="text-align: right;">0.778</td>
+<td style="text-align: right;">0.117</td>
+<td style="text-align: right;">0.549</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">6.68</td>
+<td style="text-align: right;">&lt; .001</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ausgabe-e-ausreisseranalyse-zu-modell-2" class="level3">
+<h3 class="anchored" data-anchor-id="ausgabe-e-ausreisseranalyse-zu-modell-2">Ausgabe E: Ausreisseranalyse zu Modell 2</h3>
+<p><strong>Cook-Abstand</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Mittelwert</th>
+<th style="text-align: right;">Median</th>
+<th style="text-align: right;">SD</th>
+<th style="text-align: right;">Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.00253</td>
+<td style="text-align: right;">0.00088</td>
+<td style="text-align: right;">0.00413</td>
+<td style="text-align: right;">0.0341</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Standardisierte Residuen:</strong> 21 der 420 Beobachtungen (5.0 %) haben ein standardisiertes Residuum mit einem Betrag über 2. Der grösste Betrag liegt bei 2.95.</p>
+</section>
+<section id="ausgabe-f-ein-zusätzlicher-prädiktor" class="level3">
+<h3 class="anchored" data-anchor-id="ausgabe-f-ein-zusätzlicher-prädiktor">Ausgabe F: Ein zusätzlicher Prädiktor</h3>
+<p><code>zustimmungstendenz</code> misst keine Arbeitsbedingung, sondern eine Antworttendenz. Zuerst die Korrelationen:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">zufriedenheit</th>
+<th style="text-align: right;">handlungsspielraum</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>zustimmungstendenz</code></td>
+<td style="text-align: right;">.006 (p = .900)</td>
+<td style="text-align: right;">.691 (p &lt; .001)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>handlungsspielraum</code></td>
+<td style="text-align: right;">.427 (p &lt; .001)</td>
+<td style="text-align: right;">–</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Modell F1:</strong> <code>zufriedenheit</code> ~ <code>handlungsspielraum</code></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Prädiktor</th>
+<th style="text-align: right;">Schätzung</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">stand. Schätzer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Interzept)</td>
+<td style="text-align: right;">2.81</td>
+<td style="text-align: right;">0.195</td>
+<td style="text-align: right;">14.4</td>
+<td style="text-align: right;">&lt; .001</td>
+<td style="text-align: right;">–</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">handlungsspielraum</td>
+<td style="text-align: right;">0.400</td>
+<td style="text-align: right;">0.0414</td>
+<td style="text-align: right;">9.66</td>
+<td style="text-align: right;">&lt; .001</td>
+<td style="text-align: right;">0.427</td>
+</tr>
+</tbody>
+</table>
+<p>R² = 0.182</p>
+<p><strong>Modell F2:</strong> <code>zufriedenheit</code> ~ <code>handlungsspielraum</code> + <code>zustimmungstendenz</code></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Prädiktor</th>
+<th style="text-align: right;">Schätzung</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">p</th>
+<th style="text-align: right;">stand. Schätzer</th>
+<th style="text-align: right;">VIF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Interzept)</td>
+<td style="text-align: right;">4.06</td>
+<td style="text-align: right;">0.215</td>
+<td style="text-align: right;">18.9</td>
+<td style="text-align: right;">&lt; .001</td>
+<td style="text-align: right;">–</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">handlungsspielraum</td>
+<td style="text-align: right;">0.757</td>
+<td style="text-align: right;">0.0514</td>
+<td style="text-align: right;">14.7</td>
+<td style="text-align: right;">&lt; .001</td>
+<td style="text-align: right;">0.808</td>
+<td style="text-align: right;">1.91</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">zustimmungstendenz</td>
+<td style="text-align: right;">−0.669</td>
+<td style="text-align: right;">0.0666</td>
+<td style="text-align: right;">−10.1</td>
+<td style="text-align: right;">&lt; .001</td>
+<td style="text-align: right;">−0.552</td>
+<td style="text-align: right;">1.91</td>
+</tr>
+</tbody>
+</table>
+<p>R² = 0.342</p>
+<hr>
+</section>
+</section>
+<section id="teil-1-richtig-oder-falsch" class="level1">
+<h1>Teil 1: Richtig oder falsch?</h1>
+<p>Entscheide für jede Aussage einzeln.</p>
+<section id="aufgabe-1-dummy-variable-mit-zwei-kategorien" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-1-dummy-variable-mit-zwei-kategorien">Aufgabe 1: Dummy-Variable mit zwei Kategorien</h2>
+<p>Beziehe dich auf <strong>Ausgabe C</strong>.</p>
+<div class="webex-check webex-box">
+<ul>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Der Interzept von 4.35 entspricht dem Mittelwert der Arbeitszufriedenheit in der Gruppe ohne Homeoffice.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Der Koeffizient von 0.611 ist die Differenz der Mittelwerte zwischen den beiden Gruppen.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> Weil <code>homeoffice</code> nominalskaliert ist, darf die Variable nicht als Prädiktor in eine lineare Regression aufgenommen werden.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> Der Koeffizient bedeutet, dass Homeoffice die Arbeitszufriedenheit um 0.611 Punkte erhöht.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Dieselbe Fragestellung liesse sich auch mit einem t-Test für unabhängige Stichproben untersuchen.</li>
+</ul>
+</div>
+<div class="webex-solution">
+<button>
+Erklärung zur Lösung
+</button>
+<p>Bei einer 0/1-kodierten Dummy-Variable gilt für die Gruppe mit dem Wert 0: <span class="math inline">\(\hat{y} = b_0 + b_1 \cdot 0 = b_0\)</span>. Der Interzept ist also der Gruppenmittelwert der Referenzgruppe, hier 4.35 (in der Tabelle mit den Gruppenmittelwerten: 4.346, die Differenz ist Rundung). Für die Gruppe mit dem Wert 1 gilt <span class="math inline">\(\hat{y} = b_0 + b_1 = 4.957\)</span>.</p>
+<p>Dichotome nominale Variablen sind als Prädiktoren ausdrücklich zugelassen, sofern sie mit 0 und 1 kodiert sind. Nur beim Kriterium gilt die Forderung nach Intervallskalierung.</p>
+<p>Die vierte Aussage ist eine kausale Formulierung («erhöht»). Die Daten sind korrelativ: Personen im Homeoffice sind im Mittel zufriedener, warum, bleibt offen.</p>
+</div>
+</section>
+<section id="aufgabe-2-kategoriale-variable-mit-vier-kategorien" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-2-kategoriale-variable-mit-vier-kategorien">Aufgabe 2: Kategoriale Variable mit vier Kategorien</h2>
+<p>Beziehe dich auf <strong>Ausgabe D</strong>.</p>
+<div class="webex-check webex-box">
+<ul>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Für die vier Abteilungen braucht es drei Dummy-Variablen.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Der Koeffizient zu “abteilung: Verwaltung” von 0.778 besagt: Bei gleichem Handlungsspielraum, gleicher Unterstützung und gleich vielen Überstunden ist die vorhergesagte Zufriedenheit in der Verwaltung um 0.778 Punkte höher als in der Produktion.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> Weil der Koeffizient für den Kundendienst nicht signifikant ist, hat die Abteilung insgesamt keinen Effekt auf die Arbeitszufriedenheit.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> Der Koeffizient zu “abteilung: Vertrieb” von 0.309 vergleicht den Vertrieb mit dem Kundendienst.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Wählt man eine andere Referenzkategorie, ändern sich die Koeffizienten der Dummy-Variablen, nicht aber das R² des Modells.</li>
+</ul>
+</div>
+<div class="webex-solution">
+<button>
+Erklärung zur Lösung
+</button>
+<p>Eine nominale Variable mit <em>k</em> Kategorien wird durch <em>k</em> − 1 Dummy-Variablen abgebildet, hier also drei. Jamovi verwendet die <strong>Referenzkodierung</strong>: Jeder Koeffizient ist die Differenz zwischen einer Kategorie und der Referenzkategorie, hier der Produktion. Der Vertriebs-Koeffizient vergleicht also Vertrieb mit Produktion, nicht mit dem Kundendienst.</p>
+<p>Ob die Variable <strong>insgesamt</strong> etwas erklärt, beantwortet nicht ein einzelner Koeffizient, sondern der Vergleich der beiden Modelle (ΔR² = .0811, F(3, 413) = 16.1, p &lt; .001). Die Wahl der Referenzkategorie verschiebt nur den Vergleichsmassstab. Das Modell sagt für jede Person denselben Wert vorher, und damit bleiben R², adjustiertes R² und der F-Test des Gesamtmodells unverändert.</p>
+</div>
+</section>
+<section id="aufgabe-3-hierarchische-regression" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-3-hierarchische-regression">Aufgabe 3: Hierarchische Regression</h2>
+<p>Beziehe dich auf <strong>Ausgabe D</strong>.</p>
+<div class="webex-check webex-box">
+<ul>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Die Abteilung klärt 8.1 % der Varianz der Arbeitszufriedenheit zusätzlich auf, über die drei Prädiktoren aus Block 1 hinaus.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Der F-Test des Modellvergleichs prüft, ob diese Zunahme des R² signifikant ist.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> «Hierarchische Regression» ist ein anderer Begriff für die Analyse hierarchischer, also genesteter Daten.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> Die Reihenfolge der Blöcke kann beliebig gewählt werden, weil das Ergebnis ohnehin dasselbe ist.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Das R² von Modell 2 wäre auch dann höher als das von Modell 1, wenn man statt der Abteilung drei Zufallsvariablen aufgenommen hätte.</li>
+</ul>
+</div>
+<div class="webex-solution">
+<button>
+Erklärung zur Lösung
+</button>
+<p>ΔR² = .0811 ist der Zuwachs an aufgeklärter Varianz von Modell 1 (.226) zu Modell 2 (.308). Der F-Test prüft genau diesen Zuwachs.</p>
+<p>Hierarchische Regression und hierarchische (genestete) Daten sind zwei verschiedene Dinge: Das eine ist ein blockweises Vorgehen beim Aufnehmen von Prädiktoren, das andere eine Datenstruktur, die die Voraussetzung unabhängiger Fehler verletzt.</p>
+<p>Die Reihenfolge ist nicht beliebig: Der zuerst aufgenommene Block bekommt die gemeinsame Varianz mit den später aufgenommenen Variablen zugeschrieben. Sie muss deshalb theoretisch begründet sein.</p>
+<p>Das R² kann durch zusätzliche Prädiktoren <strong>nie sinken</strong>, und bei zufälligen Variablen steigt es praktisch immer ein wenig. (Gleich bleibt es nur in Sonderfällen.) Als grobe Richtgrösse beträgt der Zuwachs durch reines Rauschen <span class="math inline">\((1 - R^2) \cdot q / (n - k - q)\)</span>, hier also rund .006 für drei Zufallsvariablen – etwa ein Vierzehntel des tatsächlichen Zuwachses von .0811.</p>
+<p>Genau deshalb braucht es den F-Test und das adjustierte R², das im Gegensatz zum R² auch sinken kann.</p>
+</div>
+</section>
+<section id="aufgabe-4-ausreisser" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-4-ausreisser">Aufgabe 4: Ausreisser</h2>
+<p>Beziehe dich auf <strong>Ausgabe E</strong>.</p>
+<div class="webex-check webex-box">
+<ul>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> In Modell 2 gibt es keine Beobachtung, die das Ergebnis übermässig beeinflusst.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> Dass 5 % der Beobachtungen ein absolutes standardisiertes Residuum über 2 haben, ist ein deutliches Warnsignal.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Wie stark eine Beobachtung die Schätzung beeinflusst, hängt nicht nur von ihrem Residuum ab, sondern auch von ihrer Hebelwirkung.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> Beobachtungen mit einem Cook-Abstand über 1 sollten grundsätzlich aus dem Datensatz entfernt werden.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Um einflussreiche Fälle zu identifizieren, kann man sich in Jamovi den Cook-Abstand als neue Spalte ausgeben lassen.</li>
+</ul>
+</div>
+<div class="webex-solution">
+<button>
+Erklärung zur Lösung
+</button>
+<p>Als Faustregel gilt Cook’s D &lt; 1. Der grösste Wert liegt hier bei 0.0341, also weit darunter.</p>
+<p>Bei perfekt normalverteilten Residuen liegen rund 5 % der Fälle ausserhalb von ±2 Standardabweichungen. Die beobachteten 5.0 % entsprechen also exakt dem, was man ohnehin erwartet. Ein grosses Residuum allein macht eine Beobachtung noch nicht einflussreich: Liegt sie in der Mitte der Prädiktorverteilung, ist ihre Hebelwirkung klein und sie zieht die Gerade kaum.</p>
+<p>Einflussreiche Ausreisser sollten nicht automatisch entfernt werden. Ein Ausschluss schränkt die Repräsentativität ein und sollte inhaltlich begründet sein.</p>
+</div>
+</section>
+<section id="aufgabe-5-suppression-und-messfehler" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-5-suppression-und-messfehler">Aufgabe 5: Suppression und Messfehler</h2>
+<p>Beziehe dich auf <strong>Ausgabe F</strong> und auf den Stoff zu Messfehlern.</p>
+<div class="webex-check webex-box">
+<ul>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> <code>zustimmungstendenz</code> korreliert praktisch nicht mit der Arbeitszufriedenheit, verbessert die Vorhersage aber deutlich.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Ein negativer Koeffizient trotz einer Korrelation von praktisch null mit dem Kriterium ist ein typisches Erkennungszeichen eines Suppressors.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> Weil <code>zustimmungstendenz</code> nicht mit der Arbeitszufriedenheit korreliert, kann die Aufnahme in das Modell nichts verändern.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="answer">richtig</option><option value="">falsch</option></select> Messfehler in einem Prädiktor führen dazu, dass dessen Regressionskoeffizient tendenziell unterschätzt wird.</li>
+<li><select class="webex-select"><option value="blank"></option><option value="">richtig</option><option value="answer">falsch</option></select> Messfehler im Kriterium verzerren die Steigung systematisch nach unten.</li>
+</ul>
+</div>
+<div class="webex-solution">
+<button>
+Erklärung zur Lösung
+</button>
+<p>Genau das ist ein <strong>Suppressionseffekt</strong>: Die Zustimmungstendenz erklärt für sich genommen nichts (r = .006), korreliert aber hoch mit dem berichteten Handlungsspielraum (r = .691). Nimmt man sie ins Modell auf, wird der Handlungsspielraum um jenen Anteil bereinigt, der nur Antworttendenz ist. Das Gewicht des Handlungsspielraums steigt von β = .427 auf β = .808, und das R² steigt von .182 auf .342.</p>
+<p>Bei Messfehlern unterscheidet man:</p>
+<ul>
+<li><strong>Fehler im Kriterium</strong>: R² sinkt, die Standardfehler werden grösser. Die Steigung bleibt im Erwartungswert korrekt.</li>
+<li><strong>Fehler im Prädiktor</strong>: zusätzlich wird der Koeffizient systematisch unterschätzt, man spricht von <strong>Regression Dilution</strong> oder Attenuation.</li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="teil-2-lückentexte" class="level1">
+<h1>Teil 2: Lückentexte</h1>
+<p>Trage deine Antworten in die Felder ein. Zahlen bitte ohne Einheit eingeben, als Dezimaltrennzeichen dient der Punkt.</p>
+<section id="aufgabe-6-gruppenmittelwerte-aus-der-regression" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-6-gruppenmittelwerte-aus-der-regression">Aufgabe 6: Gruppenmittelwerte aus der Regression</h2>
+<p>Beziehe dich auf <strong>Ausgabe C</strong>.</p>
+<div class="webex-check webex-box">
+<p>Die vorhergesagte Arbeitszufriedenheit beträgt für Personen ohne Homeoffice <input class="webex-solveme nospaces" data-tol="0.02" size="4" data-answer="[&quot;4.35&quot;]"> und für Personen mit Homeoffice <input class="webex-solveme nospaces" data-tol="0.02" size="4" data-answer="[&quot;4.96&quot;]">. Die Differenz von <input class="webex-solveme nospaces" data-tol="0.01" size="5" data-answer="[&quot;0.611&quot;,&quot;.611&quot;]"> Punkten ist <select class="webex-select"><option value="blank"></option><option value="answer">signifikant</option><option value="">nicht signifikant</option></select>.</p>
+</div>
+<div class="webex-solution">
+<button>
+Rechenweg anzeigen
+</button>
+<p><span class="math display">\[
+\hat{y}_{\text{kein Homeoffice}} = 4.35 + 0.611 \cdot 0 = 4.35
+\]</span> <span class="math display">\[
+\hat{y}_{\text{Homeoffice}} = 4.35 + 0.611 \cdot 1 = 4.96
+\]</span> Das Konfidenzintervall des Koeffizienten reicht von 0.420 bis 0.803 und schliesst die Null nicht ein, p &lt; .001.</p>
+</div>
+</section>
+<section id="aufgabe-7-dummy-kodierung" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-7-dummy-kodierung">Aufgabe 7: Dummy-Kodierung</h2>
+<div class="webex-check webex-box">
+<p>Eine nominale Variable mit 4 Kategorien wird in der Regression durch <input class="webex-solveme nospaces" data-tol="0.1" size="1" data-answer="[&quot;3&quot;]"> Dummy-Variablen abgebildet. Die Kategorie ohne eigene Dummy-Variable heisst <input class="webex-solveme nospaces ignorecase" size="20" data-answer="[&quot;Referenzkategorie&quot;,&quot;Referenzniveau&quot;,&quot;Referenz&quot;]">. In unseren Beispieldaten hat eine Person aus der Verwaltung auf allen drei Dummy-Variablen zusammen genau <input class="webex-solveme nospaces" data-tol="0.1" size="1" data-answer="[&quot;1&quot;]"> Mal den Wert 1, eine Person aus der Produktion <input class="webex-solveme nospaces" data-tol="0.1" size="1" data-answer="[&quot;0&quot;]"> Mal.</p>
+</div>
+</section>
+<section id="aufgabe-8-vorhersage-mit-dummy-variablen" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-8-vorhersage-mit-dummy-variablen">Aufgabe 8: Vorhersage mit Dummy-Variablen</h2>
+<p>Eine Person aus der <strong>Verwaltung</strong> hat einen Handlungsspielraum von 5, eine Unterstützung von 4 und leistet 6 Überstunden. Verwende die Koeffizienten von <strong>Modell 2</strong> aus Ausgabe D.</p>
+<div class="webex-check webex-box">
+<p>Die vorhergesagte Arbeitszufriedenheit beträgt <input class="webex-solveme nospaces" data-tol="0.04" size="4" data-answer="[&quot;5.22&quot;]">. Für eine sonst identische Person aus der <strong>Produktion</strong> wären es <input class="webex-solveme nospaces" data-tol="0.04" size="4" data-answer="[&quot;4.44&quot;]">.</p>
+</div>
+<div class="webex-solution">
+<button>
+Rechenweg anzeigen
+</button>
+<p>Für die Verwaltung ist die Dummy-Variable «Verwaltung – Produktion» gleich 1, die beiden anderen sind 0: <span class="math display">\[
+\hat{y} = 2.80 + 0.339 \cdot 5 + 0.0733 \cdot 4 - 0.0582 \cdot 6 + 0.778 = 5.22
+\]</span> Für die Produktion sind alle drei Dummy-Variablen 0, es fällt also nur der Summand 0.778 weg: <span class="math display">\[
+\hat{y} = 2.80 + 1.695 + 0.293 - 0.349 = 4.44
+\]</span></p>
+</div>
+</section>
+<section id="aufgabe-9-hierarchische-regression" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-9-hierarchische-regression">Aufgabe 9: Hierarchische Regression</h2>
+<p>Beziehe dich auf <strong>Ausgabe D</strong>.</p>
+<div class="webex-check webex-box">
+<p>Modell 1 erklärt <input class="webex-solveme nospaces" data-tol="0.1" size="4" data-answer="[&quot;22.6&quot;]"> % der Varianz, Modell 2 erklärt <input class="webex-solveme nospaces" data-tol="0.1" size="4" data-answer="[&quot;30.8&quot;]"> %. Die Abteilung erklärt also <input class="webex-solveme nospaces" data-tol="0.2" size="4" data-answer="[&quot;8.11&quot;]"> % zusätzlich. Der zugehörige F-Test ist <select class="webex-select"><option value="blank"></option><option value="answer">signifikant</option><option value="">nicht signifikant</option></select>.</p>
+</div>
+</section>
+<section id="aufgabe-10-ausreisser-kennwerte" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-10-ausreisser-kennwerte">Aufgabe 10: Ausreisser-Kennwerte</h2>
+<div class="webex-check webex-box">
+<p>Als Faustregel gilt eine Beobachtung dann als übermässig einflussreich, wenn ihr Cook-Abstand grösser ist als <input class="webex-solveme nospaces" data-tol="0.05" size="1" data-answer="[&quot;1&quot;]">. Der grösste Wert in Modell 2 beträgt <input class="webex-solveme nospaces" data-tol="0.005" size="6" data-answer="[&quot;0.0341&quot;,&quot;.0341&quot;]">, es gibt also <select class="webex-select"><option value="blank"></option><option value="answer">keine problematischen Fälle</option><option value="">einige problematische Fälle</option></select>.</p>
+</div>
+</section>
+<section id="aufgabe-11-stichprobengrösse-planen" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-11-stichprobengrösse-planen">Aufgabe 11: Stichprobengrösse planen</h2>
+<div class="webex-check webex-box">
+<p>Nach der Daumenregel von Green sollte die Stichprobe mindestens <input class="webex-solveme nospaces" data-tol="1" size="2" data-answer="[&quot;50&quot;]"> plus <input class="webex-solveme nospaces" data-tol="0.5" size="1" data-answer="[&quot;8&quot;]"> mal die Anzahl Prädiktoren umfassen. Für ein Modell mit 6 Prädiktoren wären das mindestens <input class="webex-solveme nospaces" data-tol="1" size="2" data-answer="[&quot;98&quot;]"> Beobachtungen.</p>
+</div>
+<div class="webex-solution">
+<button>
+Hinweis
+</button>
+<p>Die Daumenregel bezieht sich auf das R². Besser als jede Daumenregel ist eine Poweranalyse, zum Beispiel mit G*Power, bei der du den erwarteten Effekt, das Signifikanzniveau und die gewünschte Power angibst.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="teil-3-offene-fragen" class="level1">
+<h1>Teil 3: Offene Fragen</h1>
+<section id="aufgabe-12-abteilungsunterschiede-interpretieren" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-12-abteilungsunterschiede-interpretieren">Aufgabe 12: Abteilungsunterschiede interpretieren</h2>
+<p>Interpretiere die drei Abteilungs-Koeffizienten aus <strong>Modell 2</strong> und beantworte dabei: Welche Abteilung ist die Referenz, was bedeuten die Koeffizienten inhaltlich, und wie würdest du die Frage beantworten, ob die Abteilung insgesamt eine Rolle spielt?</p>
+<div class="webex-solution">
+<button>
+Musterlösung
+</button>
+<p>Referenzkategorie ist die <strong>Produktion</strong>, erkennbar daran, dass sie als einzige Kategorie keinen eigenen Koeffizienten hat. Alle Koeffizienten sind Differenzen zu dieser Gruppe, und zwar bei gleichem Handlungsspielraum, gleicher Unterstützung und gleich vielen Überstunden.</p>
+<ul>
+<li><strong>Verwaltung</strong>: um 0.778 Punkte zufriedener als die Produktion, 95 %-CI [0.549, 1.01], p &lt; .001. Der deutlichste Unterschied.</li>
+<li><strong>Vertrieb</strong>: um 0.309 Punkte zufriedener, 95 %-CI [0.046, 0.572], p = .021. Signifikant, aber mit breitem Intervall, was zur kleinen Gruppe (n = 60) passt.</li>
+<li><strong>Kundendienst</strong>: um 0.116 Punkte zufriedener, 95 %-CI [−0.096, 0.327], p = .284. Kein belegbarer Unterschied zur Produktion.</li>
+</ul>
+<p>Ob die Abteilung <strong>insgesamt</strong> etwas beiträgt, zeigt der Modellvergleich und nicht ein einzelner Koeffizient: ΔR² = .0811, F(3, 413) = 16.1, p &lt; .001. Die vier Abteilungen unterscheiden sich also bedeutsam, auch wenn nicht jeder Einzelvergleich signifikant ausfällt.</p>
+</div>
+</section>
+<section id="aufgabe-13-referenzkategorie-wählen" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-13-referenzkategorie-wählen">Aufgabe 13: Referenzkategorie wählen</h2>
+<p>Nach welchen Kriterien wählst du die Referenzkategorie? Wäre die Produktion hier eine gute Wahl? Was spräche gegen den Vertrieb?</p>
+<div class="webex-solution">
+<button>
+Musterlösung
+</button>
+<p>Zwei Kriterien sind massgeblich:</p>
+<ol type="1">
+<li><strong>Inhaltliches Interesse.</strong> Die Referenzkategorie sollte eine sinnvolle Vergleichsbasis sein. Wenn die Fragestellung lautet, ob sich die übrigen Abteilungen von der Produktion unterscheiden, ist die Produktion richtig gewählt.</li>
+<li><strong>Gruppengrösse.</strong> Je mehr Beobachtungen die Referenzkategorie enthält, desto präziser werden alle Vergleiche, weil jeder Koeffizient die Unsicherheit beider beteiligter Gruppen enthält.</li>
+</ol>
+<p>Die Produktion ist hier eine gute Wahl: Sie ist mit n = 150 die grösste Gruppe. Der Vertrieb wäre die schlechteste Wahl, weil er mit n = 60 die kleinste Gruppe ist. Alle Konfidenzintervalle würden breiter.</p>
+<p>Wichtig: Die Wahl verändert die Vergleiche, nicht das Modell. R² und der Modellvergleich bleiben identisch.</p>
+</div>
+</section>
+<section id="aufgabe-14-ein-einflussreicher-ausreisser" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-14-ein-einflussreicher-ausreisser">Aufgabe 14: Ein einflussreicher Ausreisser</h2>
+<p>In einer anderen Analyse zeigt Jamovi einen maximalen Cook-Abstand von 2.4. Wie gehst du vor?</p>
+<div class="webex-solution">
+<button>
+Musterlösung
+</button>
+<ol type="1">
+<li><strong>Fall identifizieren.</strong> In der Regressionsanalyse den Cook-Abstand als neue Spalte ausgeben lassen und die Beobachtungen mit einem Wert über 1 heraussuchen.</li>
+<li><strong>Inhaltlich prüfen.</strong> Woher kommt der Wert? Ein Tippfehler oder ein offensichtlich unmöglicher Wert ist etwas anderes als eine reale, aber untypische Person. Idealerweise lässt sich erklären, was den Fall besonders macht.</li>
+<li><strong>Einfluss abschätzen.</strong> Die Analyse ohne die einflussreichen Fälle wiederholen und vergleichen: Verändern sich die Schlussfolgerungen substanziell, oder nur die dritte Nachkommastelle?</li>
+<li><strong>Entscheiden und transparent machen.</strong> Ausschliessen nur, wenn das inhaltlich begründet ist oder das Modell sonst verzerrt wird. Jeder Ausschluss schränkt die Repräsentativität ein und verändert die Population, für die das Ergebnis gilt. Beides gehört in den Bericht.</li>
+</ol>
+<p>Oft ist eine dritte Möglichkeit die beste: Wenn eine ganze Untergruppe systematisch abweicht, kann eine zusätzliche Dummy-Variable für diese Gruppe sinnvoller sein als ein Ausschluss.</p>
+</div>
+</section>
+<section id="aufgabe-15-kontrollvariablen-und-messfehler" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-15-kontrollvariablen-und-messfehler">Aufgabe 15: Kontrollvariablen und Messfehler</h2>
+<p>Eine Kollegin argumentiert: «Ich nehme die Zustimmungstendenz als Kontrollvariable ins Modell auf, dann ist der Effekt des Handlungsspielraums um die Antworttendenz bereinigt.» Was ist daran richtig, und wo liegt die Grenze dieses Vorgehens?</p>
+<div class="webex-solution">
+<button>
+Musterlösung
+</button>
+<p><strong>Richtig</strong> ist die Grundidee. Genau das zeigt Ausgabe F: Die Kontrollvariable bindet jene Varianz im berichteten Handlungsspielraum, die nur Antworttendenz ist. Das Gewicht des Handlungsspielraums steigt dadurch von β = .427 auf β = .808, ein klassischer Suppressionseffekt.</p>
+<p><strong>Die Grenze</strong> liegt darin, dass die Kontrollvariable selbst mit Messfehler erhoben ist. Eine fehlerbehaftet gemessene Kontrollvariable kontrolliert das Konstrukt nur unvollständig. Der verbleibende Teil taucht weiterhin im Koeffizienten des interessierenden Prädiktors auf, der dadurch verzerrt bleibt. Westfall und Yarkoni (2016) nennen das <strong>Residual Confounding</strong>: Statistisch für ein Konstrukt zu kontrollieren ist schwieriger, als es aussieht, und kann sogar zu scheinbar signifikanten Effekten führen, wo keine sind.</p>
+<p>Was hilft: mehrere Items pro Konstrukt erheben und die Messfehler explizit modellieren, also Strukturgleichungsmodelle statt einer Regression mit Summenwerten. Eine Korrektur über Reliabilitätsschätzungen ist umstritten, weil die Unsicherheit der Reliabilitätsschätzung selbst unberücksichtigt bleibt.</p>
+</div>
+</section>
+<section id="aufgabe-16-messfehler-in-prädiktor-und-kriterium" class="level2">
+<h2 class="anchored" data-anchor-id="aufgabe-16-messfehler-in-prädiktor-und-kriterium">Aufgabe 16: Messfehler in Prädiktor und Kriterium</h2>
+<p>Erkläre in eigenen Worten, was mit dem Regressionskoeffizienten und mit dem R² passiert, wenn das Kriterium unzuverlässig gemessen wird, und was zusätzlich passiert, wenn der Prädiktor unzuverlässig gemessen wird.</p>
+<div class="webex-solution">
+<button>
+Musterlösung
+</button>
+<p><strong>Messfehler im Kriterium:</strong> Die Punktwolke streut stärker um die Gerade. Das R² sinkt und die Standardfehler der Koeffizienten werden grösser, die Konfidenzintervalle also breiter. Die geschätzte Steigung bleibt im Erwartungswert korrekt, sie wird nur unpräziser.</p>
+<p><strong>Messfehler im Prädiktor:</strong> Zusätzlich wird die Steigung systematisch zu flach geschätzt. Anschaulich: Die Punkte werden entlang der x-Achse auseinandergezogen, ohne dass sich ihre y-Werte ändern. Dieselbe Spannweite in y verteilt sich dadurch auf eine grössere Spannweite in x, und die Gerade wird flacher. Dieser Effekt heisst <strong>Regression Dilution</strong> oder Attenuation. Der wahre Zusammenhang ist also stärker, als die Analyse ihn ausweist.</p>
+</div>
+<hr>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Und jetzt?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Wenn dir einzelne Aufgaben schwergefallen sind, lohnt sich ein Blick in die Folien der dritten Sitzung. Die Grundlagen zu Koeffizienten, R² und Voraussetzungen findest du in der <a href="./probepruefung-regression.html">Lernkontrolle zu Teil 1</a>, das einfache lineare Modell auf der Seite <a href="./vorbereitung-lineares-modell.html">Vorbereitung: Das einfache lineare Modell</a>.</p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+
+
+
+/* update total correct if #webex-total_correct exists */
+
+update_total_correct = function() {
+
+  console.log("webex: update total_correct");
+
+
+
+  var t = document.getElementsByClassName("webex-total_correct");
+
+  for (var i = 0; i < t.length; i++) {
+
+    p = t[i].parentElement;
+
+    var correct = p.getElementsByClassName("webex-correct").length;
+
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+
+    var selects = p.getElementsByClassName("webex-select").length;
+
+
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+
+  }
+
+}
+
+
+
+/* webex-solution button toggling function */
+
+b_func = function() {
+
+  console.log("webex: toggle hide");
+
+
+
+  var cl = this.parentElement.classList;
+
+  if (cl.contains('open')) {
+
+    cl.remove("open");
+
+  } else {
+
+    cl.add("open");
+
+  }
+
+}
+
+
+
+/* check answers */
+
+check_func = function() {
+
+  console.log("webex: check answers");
+
+
+
+  var cl = this.parentElement.classList;
+
+  if (cl.contains('unchecked')) {
+
+    cl.remove("unchecked");
+
+    this.innerHTML = "Antworten ausblenden";
+
+  } else {
+
+    cl.add("unchecked");
+
+    this.innerHTML = "Antworten prüfen";
+
+  }
+
+}
+
+
+
+/* function for checking solveme answers */
+
+solveme_func = function(e) {
+
+  console.log("webex: check solveme");
+
+
+
+  var real_answers = JSON.parse(this.dataset.answer);
+
+  var my_answer = this.value;
+
+  var cl = this.classList;
+
+  if (cl.contains("ignorecase")) {
+
+    my_answer = my_answer.toLowerCase();
+
+  }
+
+  if (cl.contains("nospaces")) {
+
+    my_answer = my_answer.replace(/ /g, "")
+
+  }
+
+
+
+  if (my_answer == "") {
+
+    cl.remove("webex-correct");
+
+    cl.remove("webex-incorrect");
+
+  } else if (real_answers.includes(my_answer)) {
+
+    cl.add("webex-correct");
+
+    cl.remove("webex-incorrect");
+
+  } else {
+
+    cl.add("webex-incorrect");
+
+    cl.remove("webex-correct");
+
+  }
+
+
+
+  // match numeric answers within a specified tolerance
+
+  if(this.dataset.tol > 0){
+
+    var tol = JSON.parse(this.dataset.tol);
+
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+
+      cl.add("webex-correct");
+
+    } else {
+
+      cl.remove("webex-correct");
+
+    }
+
+  }
+
+
+
+  // added regex bit
+
+  if (cl.contains("regex")){
+
+    answer_regex = RegExp(real_answers.join("|"))
+
+    if (answer_regex.test(my_answer)) {
+
+      cl.add("webex-correct");
+
+    }
+
+  }
+
+
+
+  update_total_correct();
+
+}
+
+
+
+/* function for checking select answers */
+
+select_func = function(e) {
+
+  console.log("webex: check select");
+
+
+
+  var cl = this.classList
+
+
+
+  /* add style */
+
+  cl.remove("webex-incorrect");
+
+  cl.remove("webex-correct");
+
+  if (this.value == "answer") {
+
+    cl.add("webex-correct");
+
+  } else if (this.value != "blank") {
+
+    cl.add("webex-incorrect");
+
+  }
+
+
+
+  update_total_correct();
+
+}
+
+
+
+/* function for checking radiogroups answers */
+
+radiogroups_func = function(e) {
+
+  console.log("webex: check radiogroups");
+
+
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+
+  var cl = checked_button.parentElement.classList;
+
+  var labels = checked_button.parentElement.parentElement.children;
+
+
+
+  /* get rid of styles */
+
+  for (i = 0; i < labels.length; i++) {
+
+    labels[i].classList.remove("webex-incorrect");
+
+    labels[i].classList.remove("webex-correct");
+
+  }
+
+
+
+  /* add style */
+
+  if (checked_button.value == "answer") {
+
+    cl.add("webex-correct");
+
+  } else {
+
+    cl.add("webex-incorrect");
+
+  }
+
+
+
+  update_total_correct();
+
+}
+
+
+
+window.onload = function() {
+
+  console.log("webex onload");
+
+  /* set up solution buttons */
+
+  var buttons = document.getElementsByTagName("button");
+
+
+
+  for (var i = 0; i < buttons.length; i++) {
+
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+
+      buttons[i].onclick = b_func;
+
+    }
+
+  }
+
+
+
+  var check_sections = document.getElementsByClassName("webex-check");
+
+  console.log("check:", check_sections.length);
+
+  for (var i = 0; i < check_sections.length; i++) {
+
+    check_sections[i].classList.add("unchecked");
+
+
+
+    let btn = document.createElement("button");
+
+    btn.innerHTML = "Antworten prüfen";
+
+    btn.classList.add("webex-check-button");
+
+    btn.onclick = check_func;
+
+    check_sections[i].appendChild(btn);
+
+
+
+    let spn = document.createElement("span");
+
+    spn.classList.add("webex-total_correct");
+
+    check_sections[i].appendChild(spn);
+
+  }
+
+
+
+  /* set up webex-solveme inputs */
+
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+
+
+  for (var i = 0; i < solveme.length; i++) {
+
+    /* make sure input boxes don't auto-anything */
+
+    solveme[i].setAttribute("autocomplete","off");
+
+    solveme[i].setAttribute("autocorrect", "off");
+
+    solveme[i].setAttribute("autocapitalize", "off");
+
+    solveme[i].setAttribute("spellcheck", "false");
+
+    solveme[i].value = "";
+
+
+
+    /* adjust answer for ignorecase or nospaces */
+
+    var cl = solveme[i].classList;
+
+    var real_answer = solveme[i].dataset.answer;
+
+    if (cl.contains("ignorecase")) {
+
+      real_answer = real_answer.toLowerCase();
+
+    }
+
+    if (cl.contains("nospaces")) {
+
+      real_answer = real_answer.replace(/ /g, "");
+
+    }
+
+    solveme[i].dataset.answer = real_answer;
+
+
+
+    /* attach checking function */
+
+    solveme[i].onkeyup = solveme_func;
+
+    solveme[i].onchange = solveme_func;
+
+
+
+    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+
+  }
+
+
+
+  /* set up radiogroups */
+
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+
+  for (var i = 0; i < radiogroups.length; i++) {
+
+    radiogroups[i].onchange = radiogroups_func;
+
+  }
+
+
+
+  /* set up selects */
+
+  var selects = document.getElementsByClassName("webex-select");
+
+  for (var i = 0; i < selects.length; i++) {
+
+    selects[i].onchange = select_func;
+
+    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+
+  }
+
+
+
+  update_total_correct();
+
+}
+
+
+
+</script>
+
+<script>
+/*
+ * Klickbare Bild-Kacheln für Quiz-Fragen.
+ * Jede Kachel (.image-quiz-item) lässt sich per Klick an-/abwählen
+ * (Klasse "selected"). Ein Klick auf ".image-quiz-check-btn" vergleicht die
+ * Auswahl mit dem Attribut data-correct="true"/"false" jeder Kachel, färbt
+ * sie entsprechend ein und zeigt die Trefferquote an.
+ * ".image-quiz-reset-btn" setzt die Kacheln wieder zurück.
+ */
+document.addEventListener("DOMContentLoaded", function () {
+  var quizzes = document.getElementsByClassName("image-quiz");
+
+  for (var q = 0; q < quizzes.length; q++) {
+    (function (quiz) {
+      var items = quiz.getElementsByClassName("image-quiz-item");
+      var checkBtn = quiz.querySelector(".image-quiz-check-btn");
+      var resetBtn = quiz.querySelector(".image-quiz-reset-btn");
+      var result = quiz.querySelector(".image-quiz-result");
+      var checked = false;
+
+      var i;
+      for (i = 0; i < items.length; i++) {
+        items[i].setAttribute("aria-pressed", "false");
+        items[i].addEventListener("click", function () {
+          if (checked) return;
+          var isSelected = this.classList.toggle("selected");
+          this.setAttribute("aria-pressed", isSelected ? "true" : "false");
+        });
+      }
+
+      if (checkBtn) {
+        checkBtn.addEventListener("click", function () {
+          var correctCount = 0;
+          for (var j = 0; j < items.length; j++) {
+            var item = items[j];
+            var isCorrect = item.dataset.correct === "true";
+            var isSelected = item.classList.contains("selected");
+            item.classList.remove("image-quiz-correct", "image-quiz-incorrect");
+            if (isSelected === isCorrect) {
+              item.classList.add("image-quiz-correct");
+              correctCount++;
+            } else {
+              item.classList.add("image-quiz-incorrect");
+            }
+          }
+          checked = true;
+          if (result) {
+            result.textContent = correctCount + " von " + items.length + " Diagrammen richtig beurteilt.";
+          }
+          checkBtn.disabled = true;
+        });
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener("click", function () {
+          for (var k = 0; k < items.length; k++) {
+            items[k].classList.remove("selected", "image-quiz-correct", "image-quiz-incorrect");
+            items[k].setAttribute("aria-pressed", "false");
+          }
+          if (result) {
+            result.textContent = "";
+          }
+          checked = false;
+          if (checkBtn) checkBtn.disabled = false;
+        });
+      }
+    })(quizzes[q]);
+  }
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -10,4 +10,6 @@ Auf dieser Website sind bestimmte Materialien zur Vorlesung "Fortgeschrittene Me
 
 ## Probeprüfung
 
-➡️ [Probeprüfung: Regressionsanalyse](probepruefung-regression.qmd)
+➡️ [Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1](probepruefung-regression.qmd)
+
+➡️ [Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 2](probepruefung-regression-2.qmd)

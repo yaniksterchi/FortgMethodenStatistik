@@ -1,0 +1,560 @@
+---
+title: "Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 2"
+---
+
+```{r}
+#| include: false
+library(webexercises)
+```
+
+Diese Lernkontrolle deckt die Themen der dritten Sitzung ab: Ausreisser,
+Dummy-Variablen, hierarchische Regression, Suppression und Messfehler in den
+Prädiktoren. Sie ist gleich aufgebaut wie die
+[Lernkontrolle zu Teil 1](probepruefung-regression.qmd).
+
+::: {.callout-note}
+## So arbeitest du mit dieser Seite
+
+- Beantworte die Fragen zuerst selbstständig, bevor du die Lösungen aufklappst.
+- Bei den Richtig-Falsch- und Lückentext-Aufgaben erhältst du direkt eine
+  Rückmeldung: richtige Antworten werden grün, falsche rot markiert.
+- Bei den offenen Fragen vergleichst du deine Antwort mit der Musterlösung.
+- Du brauchst **kein Jamovi**. Alle nötigen Ergebnisse stehen in den Ausgaben
+  unten. Wenn du die Analysen selbst nachvollziehen möchtest, kannst du den
+  Datensatz herunterladen: [arbeitszufriedenheit.csv](daten/arbeitszufriedenheit.csv){download="arbeitszufriedenheit.csv"}.
+- Rechne mit den Werten, wie sie in den Jamovi-Ausgaben stehen. Kleine
+  Abweichungen durch Rundung sind bei den Antworten berücksichtigt.
+:::
+
+## Ausgangsmaterial
+
+::: {.callout-warning}
+## Fiktive Daten
+Der Datensatz ist simuliert. Er ist so konstruiert, dass die Ergebnisse
+realistisch aussehen, taugt aber nicht als inhaltliche Evidenz zum Thema
+Arbeitszufriedenheit.
+:::
+
+Es ist derselbe Datensatz wie in Teil 1 (420 Beschäftigte eines
+Dienstleistungsunternehmens, Arbeitszufriedenheit auf einer Skala von 1 bis 7),
+ergänzt um drei weitere Variablen.
+
+| Variable | Art | Bedeutung |
+|:---|:---|:---|
+| `homeoffice` | dichotom, 0/1 | Arbeitet die Person mindestens zwei Tage pro Woche im Homeoffice? 0 = nein, 1 = ja |
+| `abteilung` | nominal, 4 Kategorien | Kundendienst, Produktion, Verwaltung, Vertrieb |
+| `zustimmungstendenz` | 1 bis 7 | Allgemeine Tendenz, Fragebogenitems zuzustimmen (Akquieszenz), erhoben über eine Kontrollskala aus 4 inhaltsfremden Items |
+
+**Häufigkeiten und Gruppenmittelwerte der Arbeitszufriedenheit**
+
+| Gruppe | N | Mittelwert | SD |
+|:---|---:|---:|---:|
+| kein Homeoffice (`homeoffice` = 0) | 224 | 4.346 | 0.960 |
+| Homeoffice (`homeoffice` = 1) | 196 | 4.957 | 1.036 |
+| Produktion | 150 | 4.381 | 0.945 |
+| Kundendienst | 120 | 4.477 | 0.977 |
+| Verwaltung | 90 | 5.166 | 1.036 |
+| Vertrieb | 60 | 4.761 | 1.113 |
+
+### Ausgabe C: Regression mit einer Dummy-Variable
+
+Kriterium `zufriedenheit`, einziger Prädiktor `homeoffice`.
+
+**Güte der Modellanpassung**
+
+| Modell |     R |     R² | adj. R² |    F | df1 | df2 |      p |
+|:-------|------:|-------:|--------:|-----:|----:|----:|-------:|
+| 1      | 0.293 | 0.0861 |  0.0839 | 39.4 |   1 | 418 | < .001 |
+
+**Modellkoeffizienten – zufriedenheit**
+
+| Prädiktor    | Schätzung |     SE | CI untere | CI obere |    t |      p | stand. Schätzer |
+|:-------------|----------:|-------:|----------:|---------:|-----:|-------:|----------------:|
+| (Interzept)  |      4.35 | 0.0666 |      4.21 |     4.48 | 65.3 | < .001 |               – |
+| homeoffice   |     0.611 | 0.0975 |     0.420 |    0.803 | 6.27 | < .001 |           0.293 |
+
+### Ausgabe D: Hierarchische Regression
+
+Block 1: `handlungsspielraum`, `unterstuetzung`, `ueberstunden`.
+Block 2: zusätzlich `abteilung` (Referenzniveau: Produktion).
+
+**Güte der Modellanpassung**
+
+| Modell |     R |    R² | adj. R² |
+|:-------|------:|------:|--------:|
+| 1      | 0.476 | 0.226 |   0.221 |
+| 2      | 0.555 | 0.308 |   0.297 |
+
+**Modellvergleich**
+
+| Vergleich         |   ΔR² |    F | df1 | df2 |      p |
+|:------------------|------:|-----:|----:|----:|-------:|
+| Modell 1 – Modell 2 | 0.0811 | 16.1 |   3 | 413 | < .001 |
+
+**Modellkoeffizienten Modell 2 – zufriedenheit**
+
+| Prädiktor | Schätzung | SE | CI untere | CI obere | t | p |
+|:---|---:|---:|---:|---:|---:|---:|
+| (Interzept) | 2.80 | 0.284 | 2.24 | 3.36 | 9.88 | < .001 |
+| handlungsspielraum | 0.339 | 0.0423 | 0.255 | 0.422 | 8.00 | < .001 |
+| unterstuetzung | 0.0733 | 0.0500 | −0.0249 | 0.172 | 1.47 | .143 |
+| ueberstunden | −0.0582 | 0.0130 | −0.0838 | −0.0327 | −4.48 | < .001 |
+| abteilung: Kundendienst – Produktion | 0.116 | 0.108 | −0.0963 | 0.327 | 1.07 | .284 |
+| abteilung: Vertrieb – Produktion | 0.309 | 0.134 | 0.0464 | 0.572 | 2.31 | .021 |
+| abteilung: Verwaltung – Produktion | 0.778 | 0.117 | 0.549 | 1.01 | 6.68 | < .001 |
+
+### Ausgabe E: Ausreisseranalyse zu Modell 2
+
+**Cook-Abstand**
+
+| Mittelwert | Median |      SD |    Max |
+|-----------:|-------:|--------:|-------:|
+|    0.00253 | 0.00088 | 0.00413 | 0.0341 |
+
+**Standardisierte Residuen:** 21 der 420 Beobachtungen (5.0 %) haben ein
+standardisiertes Residuum mit einem Betrag über 2. Der grösste Betrag liegt
+bei 2.95.
+
+### Ausgabe F: Ein zusätzlicher Prädiktor
+
+`zustimmungstendenz` misst keine Arbeitsbedingung, sondern eine
+Antworttendenz. Zuerst die Korrelationen:
+
+| | zufriedenheit | handlungsspielraum |
+|:---|---:|---:|
+| `zustimmungstendenz` | .006 (p = .900) | .691 (p < .001) |
+| `handlungsspielraum` | .427 (p < .001) | – |
+
+**Modell F1:** `zufriedenheit` ~ `handlungsspielraum`
+
+| Prädiktor | Schätzung | SE | t | p | stand. Schätzer |
+|:---|---:|---:|---:|---:|---:|
+| (Interzept) | 2.81 | 0.195 | 14.4 | < .001 | – |
+| handlungsspielraum | 0.400 | 0.0414 | 9.66 | < .001 | 0.427 |
+
+R² = 0.182
+
+**Modell F2:** `zufriedenheit` ~ `handlungsspielraum` + `zustimmungstendenz`
+
+| Prädiktor | Schätzung | SE | t | p | stand. Schätzer | VIF |
+|:---|---:|---:|---:|---:|---:|---:|
+| (Interzept) | 4.06 | 0.215 | 18.9 | < .001 | – | |
+| handlungsspielraum | 0.757 | 0.0514 | 14.7 | < .001 | 0.808 | 1.91 |
+| zustimmungstendenz | −0.669 | 0.0666 | −10.1 | < .001 | −0.552 | 1.91 |
+
+R² = 0.342
+
+---
+
+# Teil 1: Richtig oder falsch?
+
+Entscheide für jede Aussage einzeln.
+
+## Aufgabe 1: Dummy-Variable mit zwei Kategorien
+
+Beziehe dich auf **Ausgabe C**.
+
+::: {.webex-check .webex-box}
+
+- `r mcq(c(answer = "richtig", "falsch"))` Der Interzept von 4.35 entspricht dem Mittelwert der Arbeitszufriedenheit in der Gruppe ohne Homeoffice.
+- `r mcq(c(answer = "richtig", "falsch"))` Der Koeffizient von 0.611 ist die Differenz der Mittelwerte zwischen den beiden Gruppen.
+- `r mcq(c("richtig", answer = "falsch"))` Weil `homeoffice` nominalskaliert ist, darf die Variable nicht als Prädiktor in eine lineare Regression aufgenommen werden.
+- `r mcq(c("richtig", answer = "falsch"))` Der Koeffizient bedeutet, dass Homeoffice die Arbeitszufriedenheit um 0.611 Punkte erhöht.
+- `r mcq(c(answer = "richtig", "falsch"))` Dieselbe Fragestellung liesse sich auch mit einem t-Test für unabhängige Stichproben untersuchen.
+
+:::
+
+`r hide("Erklärung zur Lösung")`
+Bei einer 0/1-kodierten Dummy-Variable gilt für die Gruppe mit dem Wert 0:
+$\hat{y} = b_0 + b_1 \cdot 0 = b_0$. Der Interzept ist also der
+Gruppenmittelwert der Referenzgruppe, hier 4.35 (in der Tabelle mit den
+Gruppenmittelwerten: 4.346, die Differenz ist Rundung). Für die Gruppe mit dem
+Wert 1 gilt $\hat{y} = b_0 + b_1 = 4.957$.
+
+Dichotome nominale Variablen sind als Prädiktoren ausdrücklich zugelassen,
+sofern sie mit 0 und 1 kodiert sind. Nur beim Kriterium gilt die Forderung nach
+Intervallskalierung.
+
+Die vierte Aussage ist eine kausale Formulierung («erhöht»). Die Daten sind
+korrelativ: Personen im Homeoffice sind im Mittel zufriedener, warum, bleibt
+offen.
+`r unhide()`
+
+## Aufgabe 2: Kategoriale Variable mit vier Kategorien
+
+Beziehe dich auf **Ausgabe D**.
+
+::: {.webex-check .webex-box}
+
+- `r mcq(c(answer = "richtig", "falsch"))` Für die vier Abteilungen braucht es drei Dummy-Variablen.
+- `r mcq(c(answer = "richtig", "falsch"))` Der Koeffizient zu "abteilung: Verwaltung" von 0.778 besagt: Bei gleichem Handlungsspielraum, gleicher Unterstützung und gleich vielen Überstunden ist die vorhergesagte Zufriedenheit in der Verwaltung um 0.778 Punkte höher als in der Produktion.
+- `r mcq(c("richtig", answer = "falsch"))` Weil der Koeffizient für den Kundendienst nicht signifikant ist, hat die Abteilung insgesamt keinen Effekt auf die Arbeitszufriedenheit.
+- `r mcq(c("richtig", answer = "falsch"))` Der Koeffizient zu "abteilung: Vertrieb" von 0.309 vergleicht den Vertrieb mit dem Kundendienst.
+- `r mcq(c(answer = "richtig", "falsch"))` Wählt man eine andere Referenzkategorie, ändern sich die Koeffizienten der Dummy-Variablen, nicht aber das R² des Modells.
+
+:::
+
+`r hide("Erklärung zur Lösung")`
+Eine nominale Variable mit *k* Kategorien wird durch *k* − 1 Dummy-Variablen
+abgebildet, hier also drei. Jamovi verwendet die **Referenzkodierung**: Jeder
+Koeffizient ist die Differenz zwischen einer Kategorie und der
+Referenzkategorie, hier der Produktion. Der Vertriebs-Koeffizient vergleicht
+also Vertrieb mit Produktion, nicht mit dem Kundendienst.
+
+Ob die Variable **insgesamt** etwas erklärt, beantwortet nicht ein einzelner
+Koeffizient, sondern der Vergleich der beiden Modelle (ΔR² = .0811,
+F(3, 413) = 16.1, p < .001). Die Wahl der Referenzkategorie verschiebt nur den
+Vergleichsmassstab. Das Modell sagt für jede Person denselben Wert vorher, und
+damit bleiben R², adjustiertes R² und der F-Test des Gesamtmodells unverändert.
+`r unhide()`
+
+## Aufgabe 3: Hierarchische Regression
+
+Beziehe dich auf **Ausgabe D**.
+
+::: {.webex-check .webex-box}
+
+- `r mcq(c(answer = "richtig", "falsch"))` Die Abteilung klärt 8.1 % der Varianz der Arbeitszufriedenheit zusätzlich auf, über die drei Prädiktoren aus Block 1 hinaus.
+- `r mcq(c(answer = "richtig", "falsch"))` Der F-Test des Modellvergleichs prüft, ob diese Zunahme des R² signifikant ist.
+- `r mcq(c("richtig", answer = "falsch"))` «Hierarchische Regression» ist ein anderer Begriff für die Analyse hierarchischer, also genesteter Daten.
+- `r mcq(c("richtig", answer = "falsch"))` Die Reihenfolge der Blöcke kann beliebig gewählt werden, weil das Ergebnis ohnehin dasselbe ist.
+- `r mcq(c(answer = "richtig", "falsch"))` Das R² von Modell 2 wäre auch dann höher als das von Modell 1, wenn man statt der Abteilung drei Zufallsvariablen aufgenommen hätte.
+
+:::
+
+`r hide("Erklärung zur Lösung")`
+ΔR² = .0811 ist der Zuwachs an aufgeklärter Varianz von Modell 1 (.226) zu
+Modell 2 (.308). Der F-Test prüft genau diesen Zuwachs.
+
+Hierarchische Regression und hierarchische (genestete) Daten sind zwei
+verschiedene Dinge: Das eine ist ein blockweises Vorgehen beim Aufnehmen von
+Prädiktoren, das andere eine Datenstruktur, die die Voraussetzung unabhängiger
+Fehler verletzt.
+
+Die Reihenfolge ist nicht beliebig: Der zuerst aufgenommene Block bekommt die
+gemeinsame Varianz mit den später aufgenommenen Variablen zugeschrieben. Sie
+muss deshalb theoretisch begründet sein.
+
+Das R² kann durch zusätzliche Prädiktoren **nie sinken**, und bei zufälligen
+Variablen steigt es praktisch immer ein wenig. (Gleich bleibt es nur in
+Sonderfällen.)
+Als grobe Richtgrösse beträgt der Zuwachs durch reines Rauschen
+$(1 - R^2) \cdot q / (n - k - q)$, hier also rund .006 für drei
+Zufallsvariablen – etwa ein Vierzehntel des tatsächlichen Zuwachses von .0811.
+
+Genau deshalb braucht es den F-Test und das adjustierte R², das im Gegensatz
+zum R² auch sinken kann.
+`r unhide()`
+
+## Aufgabe 4: Ausreisser
+
+Beziehe dich auf **Ausgabe E**.
+
+::: {.webex-check .webex-box}
+
+- `r mcq(c(answer = "richtig", "falsch"))` In Modell 2 gibt es keine Beobachtung, die das Ergebnis übermässig beeinflusst.
+- `r mcq(c("richtig", answer = "falsch"))` Dass 5 % der Beobachtungen ein absolutes standardisiertes Residuum über 2 haben, ist ein deutliches Warnsignal.
+- `r mcq(c(answer = "richtig", "falsch"))` Wie stark eine Beobachtung die Schätzung beeinflusst, hängt nicht nur von ihrem Residuum ab, sondern auch von ihrer Hebelwirkung.
+- `r mcq(c("richtig", answer = "falsch"))` Beobachtungen mit einem Cook-Abstand über 1 sollten grundsätzlich aus dem Datensatz entfernt werden.
+- `r mcq(c(answer = "richtig", "falsch"))` Um einflussreiche Fälle zu identifizieren, kann man sich in Jamovi den Cook-Abstand als neue Spalte ausgeben lassen.
+
+:::
+
+`r hide("Erklärung zur Lösung")`
+Als Faustregel gilt Cook's D < 1. Der grösste Wert liegt hier bei 0.0341, also
+weit darunter.
+
+Bei perfekt normalverteilten Residuen liegen rund 5 % der Fälle ausserhalb von
+±2 Standardabweichungen. Die beobachteten 5.0 % entsprechen also exakt dem, was
+man ohnehin erwartet. Ein grosses Residuum allein macht eine Beobachtung noch
+nicht einflussreich: Liegt sie in der Mitte der Prädiktorverteilung, ist ihre
+Hebelwirkung klein und sie zieht die Gerade kaum.
+
+Einflussreiche Ausreisser sollten nicht automatisch entfernt werden. Ein Ausschluss schränkt die
+Repräsentativität ein und sollte inhaltlich begründet sein.
+`r unhide()`
+
+## Aufgabe 5: Suppression und Messfehler
+
+Beziehe dich auf **Ausgabe F** und auf den Stoff zu Messfehlern.
+
+::: {.webex-check .webex-box}
+
+- `r mcq(c(answer = "richtig", "falsch"))` `zustimmungstendenz` korreliert praktisch nicht mit der Arbeitszufriedenheit, verbessert die Vorhersage aber deutlich.
+- `r mcq(c(answer = "richtig", "falsch"))` Ein negativer Koeffizient trotz einer Korrelation von praktisch null mit dem Kriterium ist ein typisches Erkennungszeichen eines Suppressors.
+- `r mcq(c("richtig", answer = "falsch"))` Weil `zustimmungstendenz` nicht mit der Arbeitszufriedenheit korreliert, kann die Aufnahme in das Modell nichts verändern.
+- `r mcq(c(answer = "richtig", "falsch"))` Messfehler in einem Prädiktor führen dazu, dass dessen Regressionskoeffizient tendenziell unterschätzt wird.
+- `r mcq(c("richtig", answer = "falsch"))` Messfehler im Kriterium verzerren die Steigung systematisch nach unten.
+
+:::
+
+`r hide("Erklärung zur Lösung")`
+Genau das ist ein **Suppressionseffekt**: Die Zustimmungstendenz erklärt für
+sich genommen nichts (r = .006), korreliert aber hoch mit dem berichteten
+Handlungsspielraum (r = .691). Nimmt man sie ins Modell auf, wird der
+Handlungsspielraum um jenen Anteil bereinigt, der nur Antworttendenz ist. Das
+Gewicht des Handlungsspielraums steigt von β = .427 auf β = .808, und das R²
+steigt von .182 auf .342.
+
+Bei Messfehlern unterscheidet man:
+
+- **Fehler im Kriterium**: R² sinkt, die Standardfehler werden grösser. Die
+  Steigung bleibt im Erwartungswert korrekt.
+- **Fehler im Prädiktor**: zusätzlich wird der Koeffizient systematisch
+  unterschätzt, man spricht von **Regression Dilution** oder Attenuation.
+`r unhide()`
+
+---
+
+# Teil 2: Lückentexte
+
+Trage deine Antworten in die Felder ein. Zahlen bitte ohne Einheit eingeben,
+als Dezimaltrennzeichen dient der Punkt.
+
+## Aufgabe 6: Gruppenmittelwerte aus der Regression
+
+Beziehe dich auf **Ausgabe C**.
+
+::: {.webex-check .webex-box}
+
+Die vorhergesagte Arbeitszufriedenheit beträgt für Personen ohne Homeoffice
+`r fitb(4.35, tol = 0.02)` und für Personen mit Homeoffice
+`r fitb(4.96, tol = 0.02)`. Die Differenz von `r fitb(0.611, tol = 0.01)`
+Punkten ist `r mcq(c(answer = "signifikant", "nicht signifikant"))`.
+
+:::
+
+`r hide("Rechenweg anzeigen")`
+$$
+\hat{y}_{\text{kein Homeoffice}} = 4.35 + 0.611 \cdot 0 = 4.35
+$$
+$$
+\hat{y}_{\text{Homeoffice}} = 4.35 + 0.611 \cdot 1 = 4.96
+$$
+Das Konfidenzintervall des Koeffizienten reicht von 0.420 bis 0.803 und
+schliesst die Null nicht ein, p < .001.
+`r unhide()`
+
+## Aufgabe 7: Dummy-Kodierung
+
+::: {.webex-check .webex-box}
+
+Eine nominale Variable mit 4 Kategorien wird in der Regression durch
+`r fitb(3, tol = 0.1)` Dummy-Variablen abgebildet. Die Kategorie ohne eigene
+Dummy-Variable heisst `r fitb(c("Referenzkategorie", "Referenzniveau", "Referenz"), ignore_case = TRUE, width = 20)`.
+In unseren Beispieldaten hat eine Person aus der Verwaltung auf allen drei Dummy-Variablen zusammen
+genau `r fitb(1, tol = 0.1)` Mal den Wert 1, eine Person aus der Produktion
+`r fitb(0, tol = 0.1)` Mal.
+
+:::
+
+## Aufgabe 8: Vorhersage mit Dummy-Variablen
+
+Eine Person aus der **Verwaltung** hat einen Handlungsspielraum von 5, eine
+Unterstützung von 4 und leistet 6 Überstunden. Verwende die Koeffizienten von
+**Modell 2** aus Ausgabe D.
+
+::: {.webex-check .webex-box}
+
+Die vorhergesagte Arbeitszufriedenheit beträgt `r fitb(5.22, tol = 0.04)`.
+Für eine sonst identische Person aus der **Produktion** wären es
+`r fitb(4.44, tol = 0.04)`.
+
+:::
+
+`r hide("Rechenweg anzeigen")`
+Für die Verwaltung ist die Dummy-Variable «Verwaltung – Produktion» gleich 1,
+die beiden anderen sind 0:
+$$
+\hat{y} = 2.80 + 0.339 \cdot 5 + 0.0733 \cdot 4 - 0.0582 \cdot 6 + 0.778 = 5.22
+$$
+Für die Produktion sind alle drei Dummy-Variablen 0, es fällt also nur der
+Summand 0.778 weg:
+$$
+\hat{y} = 2.80 + 1.695 + 0.293 - 0.349 = 4.44
+$$
+`r unhide()`
+
+## Aufgabe 9: Hierarchische Regression
+
+Beziehe dich auf **Ausgabe D**.
+
+::: {.webex-check .webex-box}
+
+Modell 1 erklärt `r fitb(22.6, tol = 0.1)` % der Varianz, Modell 2 erklärt
+`r fitb(30.8, tol = 0.1)` %. Die Abteilung erklärt also
+`r fitb(8.11, tol = 0.2)` % zusätzlich. Der zugehörige F-Test ist
+`r mcq(c(answer = "signifikant", "nicht signifikant"))`.
+
+:::
+
+## Aufgabe 10: Ausreisser-Kennwerte
+
+::: {.webex-check .webex-box}
+
+Als Faustregel gilt eine Beobachtung dann als übermässig einflussreich, wenn
+ihr Cook-Abstand grösser ist als `r fitb(1, tol = 0.05)`. Der grösste Wert in
+Modell 2 beträgt `r fitb(0.0341, tol = 0.005)`, es gibt also
+`r mcq(c(answer = "keine problematischen Fälle", "einige problematische Fälle"))`.
+
+:::
+
+
+
+## Aufgabe 11: Stichprobengrösse planen
+
+::: {.webex-check .webex-box}
+
+Nach der Daumenregel von Green sollte die Stichprobe mindestens
+`r fitb(50, tol = 1)` plus `r fitb(8, tol = 0.5)` mal die Anzahl Prädiktoren
+umfassen. Für ein Modell mit 6 Prädiktoren wären das mindestens
+`r fitb(98, tol = 1)` Beobachtungen.
+
+:::
+
+`r hide("Hinweis")`
+Die Daumenregel bezieht sich auf das R². Besser als jede Daumenregel ist eine
+Poweranalyse, zum Beispiel mit G*Power, bei der du den erwarteten Effekt, das
+Signifikanzniveau und die gewünschte Power angibst.
+`r unhide()`
+
+---
+
+# Teil 3: Offene Fragen
+
+## Aufgabe 12: Abteilungsunterschiede interpretieren
+
+Interpretiere die drei Abteilungs-Koeffizienten aus **Modell 2** und beantworte
+dabei: Welche Abteilung ist die Referenz, was bedeuten die Koeffizienten
+inhaltlich, und wie würdest du die Frage beantworten, ob die Abteilung
+insgesamt eine Rolle spielt?
+
+`r hide("Musterlösung")`
+Referenzkategorie ist die **Produktion**, erkennbar daran, dass sie als einzige
+Kategorie keinen eigenen Koeffizienten hat. Alle Koeffizienten sind Differenzen
+zu dieser Gruppe, und zwar bei gleichem Handlungsspielraum, gleicher
+Unterstützung und gleich vielen Überstunden.
+
+- **Verwaltung**: um 0.778 Punkte zufriedener als die Produktion,
+  95 %-CI [0.549, 1.01], p < .001. Der deutlichste Unterschied.
+- **Vertrieb**: um 0.309 Punkte zufriedener, 95 %-CI [0.046, 0.572], p = .021.
+  Signifikant, aber mit breitem Intervall, was zur kleinen Gruppe (n = 60) passt.
+- **Kundendienst**: um 0.116 Punkte zufriedener, 95 %-CI [−0.096, 0.327],
+  p = .284. Kein belegbarer Unterschied zur Produktion.
+
+Ob die Abteilung **insgesamt** etwas beiträgt, zeigt der Modellvergleich und
+nicht ein einzelner Koeffizient: ΔR² = .0811, F(3, 413) = 16.1, p < .001. Die
+vier Abteilungen unterscheiden sich also bedeutsam, auch wenn nicht jeder
+Einzelvergleich signifikant ausfällt.
+`r unhide()`
+
+## Aufgabe 13: Referenzkategorie wählen
+
+Nach welchen Kriterien wählst du die Referenzkategorie? Wäre die Produktion
+hier eine gute Wahl? Was spräche gegen den Vertrieb?
+
+`r hide("Musterlösung")`
+Zwei Kriterien sind massgeblich:
+
+1. **Inhaltliches Interesse.** Die Referenzkategorie sollte eine sinnvolle
+   Vergleichsbasis sein. Wenn die Fragestellung lautet, ob sich die übrigen
+   Abteilungen von der Produktion unterscheiden, ist die Produktion richtig
+   gewählt.
+2. **Gruppengrösse.** Je mehr Beobachtungen die Referenzkategorie enthält,
+   desto präziser werden alle Vergleiche, weil jeder Koeffizient die
+   Unsicherheit beider beteiligter Gruppen enthält.
+
+Die Produktion ist hier eine gute Wahl: Sie ist mit n = 150 die grösste Gruppe.
+Der Vertrieb wäre die schlechteste Wahl, weil er mit n = 60 die kleinste Gruppe
+ist. Alle Konfidenzintervalle würden breiter.
+
+Wichtig: Die Wahl verändert die Vergleiche, nicht das Modell. R² und der
+Modellvergleich bleiben identisch.
+`r unhide()`
+
+
+## Aufgabe 14: Ein einflussreicher Ausreisser
+
+In einer anderen Analyse zeigt Jamovi einen maximalen Cook-Abstand von 2.4. Wie
+gehst du vor?
+
+`r hide("Musterlösung")`
+1. **Fall identifizieren.** In der Regressionsanalyse den
+   Cook-Abstand als neue Spalte ausgeben lassen und die Beobachtungen mit einem
+   Wert über 1 heraussuchen.
+2. **Inhaltlich prüfen.** Woher kommt der Wert? Ein Tippfehler oder ein
+   offensichtlich unmöglicher Wert ist etwas anderes als eine reale, aber
+   untypische Person. Idealerweise lässt sich erklären, was den Fall besonders
+   macht.
+3. **Einfluss abschätzen.** Die Analyse ohne die einflussreichen Fälle
+   wiederholen und vergleichen: Verändern sich die Schlussfolgerungen
+   substanziell, oder nur die dritte Nachkommastelle?
+4. **Entscheiden und transparent machen.** Ausschliessen nur, wenn das
+   inhaltlich begründet ist oder das Modell sonst verzerrt wird. Jeder
+   Ausschluss schränkt die Repräsentativität ein und verändert die Population,
+   für die das Ergebnis gilt. Beides gehört in den Bericht.
+
+Oft ist eine dritte Möglichkeit die beste: Wenn eine ganze Untergruppe
+systematisch abweicht, kann eine zusätzliche Dummy-Variable für diese Gruppe
+sinnvoller sein als ein Ausschluss.
+`r unhide()`
+
+## Aufgabe 15: Kontrollvariablen und Messfehler
+
+Eine Kollegin argumentiert: «Ich nehme die Zustimmungstendenz als
+Kontrollvariable ins Modell auf, dann ist der Effekt des Handlungsspielraums um
+die Antworttendenz bereinigt.» Was ist daran richtig, und wo liegt die Grenze
+dieses Vorgehens?
+
+`r hide("Musterlösung")`
+**Richtig** ist die Grundidee. Genau das zeigt Ausgabe F: Die Kontrollvariable
+bindet jene Varianz im berichteten Handlungsspielraum, die nur Antworttendenz
+ist. Das Gewicht des Handlungsspielraums steigt dadurch von β = .427 auf
+β = .808, ein klassischer Suppressionseffekt.
+
+**Die Grenze** liegt darin, dass die Kontrollvariable selbst mit Messfehler
+erhoben ist. Eine fehlerbehaftet gemessene Kontrollvariable kontrolliert das
+Konstrukt nur unvollständig. Der verbleibende Teil taucht weiterhin im
+Koeffizienten des interessierenden Prädiktors auf, der dadurch verzerrt bleibt.
+Westfall und Yarkoni (2016) nennen das **Residual Confounding**: Statistisch für
+ein Konstrukt zu kontrollieren ist schwieriger, als es aussieht, und kann sogar
+zu scheinbar signifikanten Effekten führen, wo keine sind.
+
+Was hilft: mehrere Items pro Konstrukt erheben und die Messfehler explizit
+modellieren, also Strukturgleichungsmodelle statt einer Regression mit
+Summenwerten. Eine Korrektur über Reliabilitätsschätzungen ist umstritten, weil
+die Unsicherheit der Reliabilitätsschätzung selbst unberücksichtigt bleibt.
+`r unhide()`
+
+## Aufgabe 16: Messfehler in Prädiktor und Kriterium
+
+Erkläre in eigenen Worten, was mit dem Regressionskoeffizienten und mit dem R²
+passiert, wenn das Kriterium unzuverlässig gemessen wird, und was zusätzlich
+passiert, wenn der Prädiktor unzuverlässig gemessen wird.
+
+`r hide("Musterlösung")`
+**Messfehler im Kriterium:** Die Punktwolke streut stärker um die Gerade. Das
+R² sinkt und die Standardfehler der Koeffizienten werden grösser, die
+Konfidenzintervalle also breiter. Die geschätzte Steigung bleibt im
+Erwartungswert korrekt, sie wird nur unpräziser.
+
+**Messfehler im Prädiktor:** Zusätzlich wird die Steigung systematisch zu flach
+geschätzt. Anschaulich: Die Punkte werden entlang der x-Achse auseinandergezogen,
+ohne dass sich ihre y-Werte ändern. Dieselbe Spannweite in y verteilt sich
+dadurch auf eine grössere Spannweite in x, und die Gerade wird flacher. Dieser
+Effekt heisst **Regression Dilution** oder Attenuation. Der wahre Zusammenhang
+ist also stärker, als die Analyse ihn ausweist.
+`r unhide()`
+
+---
+
+::: {.callout-tip}
+## Und jetzt?
+
+Wenn dir einzelne Aufgaben schwergefallen sind, lohnt sich ein Blick in die
+Folien der dritten Sitzung. Die Grundlagen zu Koeffizienten, R² und
+Voraussetzungen findest du in der
+[Lernkontrolle zu Teil 1](probepruefung-regression.qmd), das einfache lineare
+Modell auf der Seite
+[Vorbereitung: Das einfache lineare Modell](vorbereitung-lineares-modell.qmd).
+:::

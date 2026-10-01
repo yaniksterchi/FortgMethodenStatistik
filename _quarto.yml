@@ -14,7 +14,9 @@ website:
       - href: vorbereitung-lineares-modell.qmd
         text: "Vorbereitung: Lineares Modell"
       - href: probepruefung-regression.qmd
-        text: "Probeprüfung: Regression"
+        text: "Lernkontrolle: Regression 1"
+      - href: probepruefung-regression-2.qmd
+        text: "Lernkontrolle: Regression 2"
 
 format:
   html:
