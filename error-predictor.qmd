@@ -1,0 +1,195 @@
+---
+title: "Interaktiv: Fehler im Prädiktor und Kriterium"
+---
+
+Auf dieser Seite kannst du selbst ausprobieren, wie sich die Stichprobengrösse
+und die Fehlervarianzen auf ein Streudiagramm und die geschätzte
+Regressionsgerade auswirken.
+
+## Die Simulation
+
+Die Daten werden nach folgendem Modell erzeugt: Die *wahre* Handy-Nutzung
+$x_{\text{wahr}}$ ist normalverteilt (Mittelwert 4 Stunden, Standardabweichung
+1.5 Stunden), und die Schmerzen hängen linear davon ab:
+
+$$
+y = 2 + 0.5 \cdot x_{\text{wahr}} + \varepsilon_y
+$$
+
+Beobachtet wird allerdings nicht $x_{\text{wahr}}$, sondern ein fehlerbehaftetes
+Mass $x = x_{\text{wahr}} + \varepsilon_x$ (z. B. weil Studierende ihre
+Handy-Nutzung nur ungenau angeben können). Die Regressionsgerade wird mit den
+beobachteten Werten $x$ und $y$ geschätzt.
+
+```{ojs}
+//| echo: false
+viewof n = Inputs.number([3, 9999], {
+  value: 1000,
+  step: 1,
+  label: "Stichprobengrösse N (max. 4 Stellen)"
+})
+```
+
+```{ojs}
+//| echo: false
+viewof varY = Inputs.range([0, 4], {
+  value: 1,
+  step: 0.05,
+  label: "Fehlervarianz von y"
+})
+```
+
+```{ojs}
+//| echo: false
+viewof varX = Inputs.range([0, 4], {
+  value: 0,
+  step: 0.05,
+  label: "Fehlervarianz von x"
+})
+```
+
+```{ojs}
+//| echo: false
+viewof seed = {
+  const form = Inputs.button("Neue Stichprobe ziehen", {
+    value: 1,
+    reduce: (s) => s + 1
+  });
+  // Eigene CSS-Klasse, damit der Button unten im <style>-Block gut lesbar gestaltet wird
+  form.querySelector("button").classList.add("seed-btn");
+  return form;
+}
+```
+
+<style>
+form button.seed-btn {
+  background-color: #467AAC !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 0.5em !important;
+  padding: 0.45em 1em !important;
+  font-weight: 600;
+  cursor: pointer;
+}
+form button.seed-btn:hover {
+  background-color: #35618c !important;
+  color: #ffffff !important;
+}
+</style>
+
+```{ojs}
+//| echo: false
+// N bereinigen: ganze Zahl zwischen 3 und 9999 (bei ungültiger Eingabe: 1000)
+N = Number.isFinite(n) ? Math.min(9999, Math.max(3, Math.round(n))) : 1000  
+```
+
+```{ojs}
+//| echo: false
+// Standardnormalverteilte Zufallszahlen: nur neu gezogen, wenn sich N oder die
+// Stichprobe ändert. Beim Bewegen der Regler werden sie nur umskaliert – so
+// "wackelt" die Punktwolke nicht bei jedem Schritt komplett neu.
+base = {
+  const rnd = d3.randomNormal.source(d3.randomLcg((seed * 7919 + N) % 2147483647))(0, 1);
+  return Array.from({length: N}, () => ({t: rnd(), ex: rnd(), ey: rnd()}));
+}
+```
+
+```{ojs}
+//| echo: false
+data = base.map((d) => {
+  const xWahr = 4 + 1.5 * d.t;
+  return {
+    x: xWahr + Math.sqrt(varX) * d.ex,
+    y: 2 + 0.5 * xWahr + Math.sqrt(varY) * d.ey
+  };
+})
+```
+
+```{ojs}
+//| echo: false
+// Kleinste-Quadrate-Schätzung (einfache lineare Regression)
+fit = {
+  const mx = d3.mean(data, (d) => d.x);
+  const my = d3.mean(data, (d) => d.y);
+  const sxx = d3.sum(data, (d) => (d.x - mx) ** 2);
+  const syy = d3.sum(data, (d) => (d.y - my) ** 2);
+  const sxy = d3.sum(data, (d) => (d.x - mx) * (d.y - my));
+  const b1 = sxx > 0 ? sxy / sxx : 0;
+  const b0 = my - b1 * mx;
+  const r2 = sxx > 0 && syy > 0 ? (sxy * sxy) / (sxx * syy) : 0;
+  return {b0, b1, r2};
+}
+```
+
+```{ojs}
+//| echo: false
+// Erwartete Steigung bei sehr grossem N (Regressionsverdünnung):
+// 0.5 * Var(x_wahr) / (Var(x_wahr) + Fehlervarianz von x)
+slopeExpected = 0.5 * 2.25 / (2.25 + varX)
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  width: 640,
+  height: 420,
+  marginLeft: 55,
+  marginBottom: 45,
+  style: {fontSize: "14px"},
+  x: {label: "Handy-Nutzung (Stunden pro Tag) →", domain: [-4, 12], grid: true},
+  y: {label: "↑ Schmerzen", domain: [-5, 11], grid: true},
+  marks: [
+    Plot.dot(data, {
+      x: "x",
+      y: "y",
+      r: N > 1000 ? 2 : 3.5,
+      fill: "#2b6cb0",
+      fillOpacity: N > 1000 ? 0.3 : 0.55
+    }),
+    Plot.line([[-4, 2 + 0.5 * -4], [12, 2 + 0.5 * 12]], {
+      stroke: "#888888",
+      strokeDasharray: "6,4",
+      strokeWidth: 2
+    }),
+    Plot.line([[-4, fit.b0 + fit.b1 * -4], [12, fit.b0 + fit.b1 * 12]], {
+      stroke: "#c0392b",
+      strokeWidth: 3
+    })
+  ]
+})
+```
+
+<span style="color:#c0392b; font-weight:bold;">&#9473;</span> geschätzte Regressionsgerade
+&nbsp;&nbsp;
+<span style="color:#888888; font-weight:bold;">&#9473; &#9473;</span> wahre Gerade ($y = 2 + 0.5 \cdot x_{\text{wahr}}$)
+
+```{ojs}
+//| echo: false
+html`<p style="font-size:1.05em">
+  <strong>Geschätztes Modell:</strong> ŷ = ${fit.b0.toFixed(2)} + ${fit.b1.toFixed(2)} · x
+  &nbsp;|&nbsp; <strong>R²</strong> = ${fit.r2.toFixed(2)}
+  &nbsp;|&nbsp; <strong>N</strong> = ${N}
+</p>
+<p style="font-size:0.95em; color:#555;">
+  Bei sehr grossem N wäre die geschätzte Steigung etwa
+  <strong>${slopeExpected.toFixed(2)}</strong> (wahre Steigung: 0.50).
+</p>`
+```
+
+## Was du ausprobieren kannst
+
+- **Fehlervarianz von y erhöhen:** Die Punkte streuen stärker um die Gerade,
+  $R^2$ sinkt. Wenn die geschätzte Gerade von der wahren Gerade abweicht, dann 
+  wird diese Abweichung grösser - die Schätzung wird *ungenauer*. Die geschätzte 
+  Gerade bleibt im Durchschnitt aber bei der wahren Geraden: Wenn man die 
+  Stichprobe mehrmals neu zieht, schwankt die geschätzte Gerade um die wahre Gerade, 
+  ohne systematisch zu hoch oder zu tief zu sein.
+- **Fehlervarianz von x erhöhen:** Jetzt wird die geschätzte Gerade
+  systematisch **flacher** als die wahre Gerade – und zwar auch bei grossem N.
+  Dieses Phänomen heisst *Regressionsverdünnung* (Attenuation): Messfehler im
+  Prädiktor schwächen die geschätzte Steigung ab, während Messfehler in der
+  Ergebnisvariable $y$ die Steigung nicht verzerren.
+- **N verkleinern (z. B. 10):** Die geschätzte Gerade schwankt von Stichprobe
+  zu Stichprobe stark. Klicke mehrmals auf **„Neue Stichprobe ziehen"** und
+  beobachte, wie stark sie variiert. Bei grossem N (z. B. 5000) ist sie
+  praktisch stabil.

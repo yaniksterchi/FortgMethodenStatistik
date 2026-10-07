@@ -1,15 +1,19 @@
 ---
-title: "Statistik als Modellierung"
+title: "Regression"
 ---
 
 Auf dieser Website sind bestimmte Materialien zur Vorlesung "Fortgeschrittene Methoden der Statistik" verlinkt. 
 
-## Vorbereitung auf die zweite Sitzung
+## Inhalte und Veranschaulichungen
 
 ➡️ [Vorbereitung: Das einfache lineare Modell](vorbereitung-lineares-modell.qmd)
 
-## Probeprüfung
+➡️ [Fehler in Prädiktorvariablen](error-predictor.qmd)
+
+## Prüfungsfragen
 
 ➡️ [Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 1](probepruefung-regression.qmd)
 
 ➡️ [Prüfungsfragen zur Lernkontrolle: Regressionsanalyse Teil 2](probepruefung-regression-2.qmd)
+
+

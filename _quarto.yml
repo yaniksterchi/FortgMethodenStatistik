@@ -9,14 +9,15 @@ website:
   title: "Statistik als Modellierung"
   navbar:
     left:
-      - href: index.qmd
-        text: "Start"
+      - href: error-predictor.qmd
+        text: "Interaktiv: Fehler in Prädiktorvariablen"
       - href: vorbereitung-lineares-modell.qmd
         text: "Vorbereitung: Lineares Modell"
       - href: probepruefung-regression.qmd
         text: "Lernkontrolle: Regression 1"
       - href: probepruefung-regression-2.qmd
         text: "Lernkontrolle: Regression 2"
+
 
 format:
   html:

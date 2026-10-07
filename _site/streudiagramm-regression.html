@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Interaktiv: Streudiagramm und Regressionsgerade – Statistik als Modellierung</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="include/webex.css">
+<link rel="stylesheet" href="include/image-quiz.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Statistik als Modellierung</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Start</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./vorbereitung-lineares-modell.html"> 
+<span class="menu-text">Vorbereitung: Lineares Modell</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Auf dieser Seite</h2>
+   
+  <ul>
+  <li><a href="#die-simulation" id="toc-die-simulation" class="nav-link active" data-scroll-target="#die-simulation">Die Simulation</a></li>
+  <li><a href="#was-du-ausprobieren-kannst" id="toc-was-du-ausprobieren-kannst" class="nav-link" data-scroll-target="#was-du-ausprobieren-kannst">Was du ausprobieren kannst</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Interaktiv: Streudiagramm und Regressionsgerade</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Auf dieser Seite kannst du selbst ausprobieren, wie sich die Stichprobengrösse und die Fehlervarianzen auf ein Streudiagramm und die geschätzte Regressionsgerade auswirken.</p>
+<section id="die-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="die-simulation">Die Simulation</h2>
+<p>Die Daten werden nach folgendem Modell erzeugt: Die <em>wahre</em> Handy-Nutzung <span class="math inline">\(x_{\text{wahr}}\)</span> ist normalverteilt (Mittelwert 4 Stunden, Standardabweichung 1.5 Stunden), und die Schmerzen hängen linear davon ab:</p>
+<p><span class="math display">\[
+y = 2 + 0.5 \cdot x_{\text{wahr}} + \varepsilon_y
+\]</span></p>
+<p>Beobachtet wird allerdings nicht <span class="math inline">\(x_{\text{wahr}}\)</span>, sondern ein fehlerbehaftetes Mass <span class="math inline">\(x = x_{\text{wahr}} + \varepsilon_x\)</span> (z. B. weil Studierende ihre Handy-Nutzung nur ungenau angeben können). Die Regressionsgerade wird mit den beobachteten Werten <span class="math inline">\(x\)</span> und <span class="math inline">\(y\)</span> geschätzt.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="25" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 24;"><span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>viewof n <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">number</span>([<span class="dv">3</span><span class="op">,</span> <span class="dv">9999</span>]<span class="op">,</span> {</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1000</span><span class="op">,</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Stichprobengrösse N (max. 4 Stellen)"</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="34" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 33;"><span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>viewof varY <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">4</span>]<span class="op">,</span> {</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Fehlervarianz von y"</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="43" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 42;"><span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>viewof varX <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">0</span><span class="op">,</span> <span class="dv">4</span>]<span class="op">,</span> {</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  <span class="dt">step</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Fehlervarianz von x"</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="52" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 51;"><span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>viewof seed <span class="op">=</span> {</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> form <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">button</span>(<span class="st">"Neue Stichprobe ziehen"</span><span class="op">,</span> {</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="dt">reduce</span><span class="op">:</span> (s) <span class="kw">=&gt;</span> s <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Eigene CSS-Klasse, damit der Button unten im &lt;style&gt;-Block gut lesbar gestaltet wird</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>  form<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"button"</span>)<span class="op">.</span><span class="at">classList</span><span class="op">.</span><span class="fu">add</span>(<span class="st">"seed-btn"</span>)<span class="op">;</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> form<span class="op">;</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<style>
+form button.seed-btn {
+  background-color: #467AAC !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 0.5em !important;
+  padding: 0.45em 1em !important;
+  font-weight: 600;
+  cursor: pointer;
+}
+form button.seed-btn:hover {
+  background-color: #35618c !important;
+  color: #ffffff !important;
+}
+</style>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="81" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 80;"><span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a><span class="co">// N bereinigen: ganze Zahl zwischen 3 und 9999 (bei ungültiger Eingabe: 1000)</span></span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="bu">Number</span><span class="op">.</span><span class="fu">isFinite</span>(n) <span class="op">?</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">9999</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">3</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(n))) <span class="op">:</span> <span class="dv">1000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="87" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 86;"><span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="co">// Standardnormalverteilte Zufallszahlen: nur neu gezogen, wenn sich N oder die</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="co">// Stichprobe ändert. Beim Bewegen der Regler werden sie nur umskaliert – so</span></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="co">// "wackelt" die Punktwolke nicht bei jedem Schritt komplett neu.</span></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> {</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rnd <span class="op">=</span> d3<span class="op">.</span><span class="at">randomNormal</span><span class="op">.</span><span class="fu">source</span>(d3<span class="op">.</span><span class="fu">randomLcg</span>((seed <span class="op">*</span> <span class="dv">7919</span> <span class="op">+</span> N) <span class="op">%</span> <span class="dv">2147483647</span>))(<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> N}<span class="op">,</span> () <span class="kw">=&gt;</span> ({<span class="dt">t</span><span class="op">:</span> <span class="fu">rnd</span>()<span class="op">,</span> <span class="dt">ex</span><span class="op">:</span> <span class="fu">rnd</span>()<span class="op">,</span> <span class="dt">ey</span><span class="op">:</span> <span class="fu">rnd</span>()}))<span class="op">;</span></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="98" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 97;"><span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> base<span class="op">.</span><span class="fu">map</span>((d) <span class="kw">=&gt;</span> {</span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> xWahr <span class="op">=</span> <span class="dv">4</span> <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> d<span class="op">.</span><span class="at">t</span><span class="op">;</span></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {</span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> xWahr <span class="op">+</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(varX) <span class="op">*</span> d<span class="op">.</span><span class="at">ex</span><span class="op">,</span></span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> <span class="dv">2</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> xWahr <span class="op">+</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sqrt</span>(varY) <span class="op">*</span> d<span class="op">.</span><span class="at">ey</span></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="109" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 108;"><span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a><span class="co">// Kleinste-Quadrate-Schätzung (einfache lineare Regression)</span></span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> {</span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> mx <span class="op">=</span> d3<span class="op">.</span><span class="fu">mean</span>(data<span class="op">,</span> (d) <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">x</span>)<span class="op">;</span></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> my <span class="op">=</span> d3<span class="op">.</span><span class="fu">mean</span>(data<span class="op">,</span> (d) <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">y</span>)<span class="op">;</span></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sxx <span class="op">=</span> d3<span class="op">.</span><span class="fu">sum</span>(data<span class="op">,</span> (d) <span class="kw">=&gt;</span> (d<span class="op">.</span><span class="at">x</span> <span class="op">-</span> mx) <span class="op">**</span> <span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> syy <span class="op">=</span> d3<span class="op">.</span><span class="fu">sum</span>(data<span class="op">,</span> (d) <span class="kw">=&gt;</span> (d<span class="op">.</span><span class="at">y</span> <span class="op">-</span> my) <span class="op">**</span> <span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sxy <span class="op">=</span> d3<span class="op">.</span><span class="fu">sum</span>(data<span class="op">,</span> (d) <span class="kw">=&gt;</span> (d<span class="op">.</span><span class="at">x</span> <span class="op">-</span> mx) <span class="op">*</span> (d<span class="op">.</span><span class="at">y</span> <span class="op">-</span> my))<span class="op">;</span></span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> b1 <span class="op">=</span> sxx <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> sxy <span class="op">/</span> sxx <span class="op">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> b0 <span class="op">=</span> my <span class="op">-</span> b1 <span class="op">*</span> mx<span class="op">;</span></span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r2 <span class="op">=</span> sxx <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> syy <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> (sxy <span class="op">*</span> sxy) <span class="op">/</span> (sxx <span class="op">*</span> syy) <span class="op">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {b0<span class="op">,</span> b1<span class="op">,</span> r2}<span class="op">;</span></span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="125" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 124;"><span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a><span class="co">// Erwartete Steigung bei sehr grossem N (Regressionsverdünnung):</span></span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a><span class="co">// 0.5 * Var(x_wahr) / (Var(x_wahr) + Fehlervarianz von x)</span></span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a>slopeExpected <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">2.25</span> <span class="op">/</span> (<span class="fl">2.25</span> <span class="op">+</span> varX)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="132" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 131;"><span id="cb10-132"><a href="#cb10-132" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb10-133"><a href="#cb10-133" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">640</span><span class="op">,</span></span>
+<span id="cb10-134"><a href="#cb10-134" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">420</span><span class="op">,</span></span>
+<span id="cb10-135"><a href="#cb10-135" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">55</span><span class="op">,</span></span>
+<span id="cb10-136"><a href="#cb10-136" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginBottom</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a>  <span class="dt">style</span><span class="op">:</span> {<span class="dt">fontSize</span><span class="op">:</span> <span class="st">"14px"</span>}<span class="op">,</span></span>
+<span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Handy-Nutzung (Stunden pro Tag) →"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">4</span><span class="op">,</span> <span class="dv">12</span>]<span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"↑ Schmerzen"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">5</span><span class="op">,</span> <span class="dv">11</span>]<span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(data<span class="op">,</span> {</span>
+<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span></span>
+<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb10-144"><a href="#cb10-144" aria-hidden="true" tabindex="-1"></a>      <span class="dt">r</span><span class="op">:</span> N <span class="op">&gt;</span> <span class="dv">1000</span> <span class="op">?</span> <span class="dv">2</span> <span class="op">:</span> <span class="fl">3.5</span><span class="op">,</span></span>
+<span id="cb10-145"><a href="#cb10-145" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">"#2b6cb0"</span><span class="op">,</span></span>
+<span id="cb10-146"><a href="#cb10-146" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fillOpacity</span><span class="op">:</span> N <span class="op">&gt;</span> <span class="dv">1000</span> <span class="op">?</span> <span class="fl">0.3</span> <span class="op">:</span> <span class="fl">0.55</span></span>
+<span id="cb10-147"><a href="#cb10-147" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb10-148"><a href="#cb10-148" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>([[<span class="op">-</span><span class="dv">4</span><span class="op">,</span> <span class="dv">2</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="op">-</span><span class="dv">4</span>]<span class="op">,</span> [<span class="dv">12</span><span class="op">,</span> <span class="dv">2</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="dv">12</span>]]<span class="op">,</span> {</span>
+<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"#888888"</span><span class="op">,</span></span>
+<span id="cb10-150"><a href="#cb10-150" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"6,4"</span><span class="op">,</span></span>
+<span id="cb10-151"><a href="#cb10-151" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span></span>
+<span id="cb10-152"><a href="#cb10-152" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb10-153"><a href="#cb10-153" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">line</span>([[<span class="op">-</span><span class="dv">4</span><span class="op">,</span> fit<span class="op">.</span><span class="at">b0</span> <span class="op">+</span> fit<span class="op">.</span><span class="at">b1</span> <span class="op">*</span> <span class="op">-</span><span class="dv">4</span>]<span class="op">,</span> [<span class="dv">12</span><span class="op">,</span> fit<span class="op">.</span><span class="at">b0</span> <span class="op">+</span> fit<span class="op">.</span><span class="at">b1</span> <span class="op">*</span> <span class="dv">12</span>]]<span class="op">,</span> {</span>
+<span id="cb10-154"><a href="#cb10-154" aria-hidden="true" tabindex="-1"></a>      <span class="dt">stroke</span><span class="op">:</span> <span class="st">"#c0392b"</span><span class="op">,</span></span>
+<span id="cb10-155"><a href="#cb10-155" aria-hidden="true" tabindex="-1"></a>      <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">3</span></span>
+<span id="cb10-156"><a href="#cb10-156" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb10-157"><a href="#cb10-157" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb10-158"><a href="#cb10-158" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-10" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<p><span style="color:#c0392b; font-weight:bold;">━</span> geschätzte Regressionsgerade &nbsp;&nbsp; <span style="color:#888888; font-weight:bold;">━ ━</span> wahre Gerade (<span class="math inline">\(y = 2 + 0.5 \cdot x_{\text{wahr}}\)</span>)</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="167" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 166;"><span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;p style="font-size:1.05em"&gt;</span></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;strong&gt;Geschätztes Modell:&lt;/strong&gt; ŷ = </span><span class="sc">${</span>fit<span class="op">.</span><span class="at">b0</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> + </span><span class="sc">${</span>fit<span class="op">.</span><span class="at">b1</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs"> · x</span></span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a><span class="vs">  &amp;nbsp;|&amp;nbsp; &lt;strong&gt;R²&lt;/strong&gt; = </span><span class="sc">${</span>fit<span class="op">.</span><span class="at">r2</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span></span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a><span class="vs">  &amp;nbsp;|&amp;nbsp; &lt;strong&gt;N&lt;/strong&gt; = </span><span class="sc">${</span>N<span class="sc">}</span></span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/p&gt;</span></span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;p style="font-size:0.95em; color:#555;"&gt;</span></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a><span class="vs">  Bei sehr grossem N wäre die geschätzte Steigung etwa</span></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;strong&gt;</span><span class="sc">${</span>slopeExpected<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">&lt;/strong&gt; (wahre Steigung: 0.50).</span></span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/p&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-11" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
+<section id="was-du-ausprobieren-kannst" class="level2">
+<h2 class="anchored" data-anchor-id="was-du-ausprobieren-kannst">Was du ausprobieren kannst</h2>
+<ul>
+<li><strong>Fehlervarianz von y erhöhen:</strong> Die Punkte streuen stärker um die Gerade, <span class="math inline">\(R^2\)</span> sinkt. Die geschätzte Gerade bleibt im Durchschnitt aber bei der wahren Geraden – sie wird nur <em>ungenauer</em>.</li>
+<li><strong>N verkleinern (z. B. 10):</strong> Die geschätzte Gerade schwankt von Stichprobe zu Stichprobe stark. Klicke mehrmals auf <strong>„Neue Stichprobe ziehen”</strong> und beobachte, wie stark sie variiert. Bei grossem N (z. B. 5000) ist sie praktisch stabil.</li>
+<li><strong>Fehlervarianz von x erhöhen:</strong> Jetzt wird die geschätzte Gerade systematisch <strong>flacher</strong> als die wahre Gerade – und zwar auch bei grossem N. Dieses Phänomen heisst <em>Regressionsverdünnung</em> (Attenuation): Messfehler im Prädiktor schwächen die geschätzte Steigung ab, während Messfehler in der Ergebnisvariable <span class="math inline">\(y\)</span> die Steigung nicht verzerren.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script>
+
+
+
+/* update total correct if #webex-total_correct exists */
+
+update_total_correct = function() {
+
+  console.log("webex: update total_correct");
+
+
+
+  var t = document.getElementsByClassName("webex-total_correct");
+
+  for (var i = 0; i < t.length; i++) {
+
+    p = t[i].parentElement;
+
+    var correct = p.getElementsByClassName("webex-correct").length;
+
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+
+    var selects = p.getElementsByClassName("webex-select").length;
+
+
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+
+  }
+
+}
+
+
+
+/* webex-solution button toggling function */
+
+b_func = function() {
+
+  console.log("webex: toggle hide");
+
+
+
+  var cl = this.parentElement.classList;
+
+  if (cl.contains('open')) {
+
+    cl.remove("open");
+
+  } else {
+
+    cl.add("open");
+
+  }
+
+}
+
+
+
+/* check answers */
+
+check_func = function() {
+
+  console.log("webex: check answers");
+
+
+
+  var cl = this.parentElement.classList;
+
+  if (cl.contains('unchecked')) {
+
+    cl.remove("unchecked");
+
+    this.innerHTML = "Antworten ausblenden";
+
+  } else {
+
+    cl.add("unchecked");
+
+    this.innerHTML = "Antworten prüfen";
+
+  }
+
+}
+
+
+
+/* function for checking solveme answers */
+
+solveme_func = function(e) {
+
+  console.log("webex: check solveme");
+
+
+
+  var real_answers = JSON.parse(this.dataset.answer);
+
+  var my_answer = this.value;
+
+  var cl = this.classList;
+
+  if (cl.contains("ignorecase")) {
+
+    my_answer = my_answer.toLowerCase();
+
+  }
+
+  if (cl.contains("nospaces")) {
+
+    my_answer = my_answer.replace(/ /g, "")
+
+  }
+
+
+
+  if (my_answer == "") {
+
+    cl.remove("webex-correct");
+
+    cl.remove("webex-incorrect");
+
+  } else if (real_answers.includes(my_answer)) {
+
+    cl.add("webex-correct");
+
+    cl.remove("webex-incorrect");
+
+  } else {
+
+    cl.add("webex-incorrect");
+
+    cl.remove("webex-correct");
+
+  }
+
+
+
+  // match numeric answers within a specified tolerance
+
+  if(this.dataset.tol > 0){
+
+    var tol = JSON.parse(this.dataset.tol);
+
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+
+      cl.add("webex-correct");
+
+    } else {
+
+      cl.remove("webex-correct");
+
+    }
+
+  }
+
+
+
+  // added regex bit
+
+  if (cl.contains("regex")){
+
+    answer_regex = RegExp(real_answers.join("|"))
+
+    if (answer_regex.test(my_answer)) {
+
+      cl.add("webex-correct");
+
+    }
+
+  }
+
+
+
+  update_total_correct();
+
+}
+
+
+
+/* function for checking select answers */
+
+select_func = function(e) {
+
+  console.log("webex: check select");
+
+
+
+  var cl = this.classList
+
+
+
+  /* add style */
+
+  cl.remove("webex-incorrect");
+
+  cl.remove("webex-correct");
+
+  if (this.value == "answer") {
+
+    cl.add("webex-correct");
+
+  } else if (this.value != "blank") {
+
+    cl.add("webex-incorrect");
+
+  }
+
+
+
+  update_total_correct();
+
+}
+
+
+
+/* function for checking radiogroups answers */
+
+radiogroups_func = function(e) {
+
+  console.log("webex: check radiogroups");
+
+
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+
+  var cl = checked_button.parentElement.classList;
+
+  var labels = checked_button.parentElement.parentElement.children;
+
+
+
+  /* get rid of styles */
+
+  for (i = 0; i < labels.length; i++) {
+
+    labels[i].classList.remove("webex-incorrect");
+
+    labels[i].classList.remove("webex-correct");
+
+  }
+
+
+
+  /* add style */
+
+  if (checked_button.value == "answer") {
+
+    cl.add("webex-correct");
+
+  } else {
+
+    cl.add("webex-incorrect");
+
+  }
+
+
+
+  update_total_correct();
+
+}
+
+
+
+window.onload = function() {
+
+  console.log("webex onload");
+
+  /* set up solution buttons */
+
+  var buttons = document.getElementsByTagName("button");
+
+
+
+  for (var i = 0; i < buttons.length; i++) {
+
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+
+      buttons[i].onclick = b_func;
+
+    }
+
+  }
+
+
+
+  var check_sections = document.getElementsByClassName("webex-check");
+
+  console.log("check:", check_sections.length);
+
+  for (var i = 0; i < check_sections.length; i++) {
+
+    check_sections[i].classList.add("unchecked");
+
+
+
+    let btn = document.createElement("button");
+
+    btn.innerHTML = "Antworten prüfen";
+
+    btn.classList.add("webex-check-button");
+
+    btn.onclick = check_func;
+
+    check_sections[i].appendChild(btn);
+
+
+
+    let spn = document.createElement("span");
+
+    spn.classList.add("webex-total_correct");
+
+    check_sections[i].appendChild(spn);
+
+  }
+
+
+
+  /* set up webex-solveme inputs */
+
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+
+
+  for (var i = 0; i < solveme.length; i++) {
+
+    /* make sure input boxes don't auto-anything */
+
+    solveme[i].setAttribute("autocomplete","off");
+
+    solveme[i].setAttribute("autocorrect", "off");
+
+    solveme[i].setAttribute("autocapitalize", "off");
+
+    solveme[i].setAttribute("spellcheck", "false");
+
+    solveme[i].value = "";
+
+
+
+    /* adjust answer for ignorecase or nospaces */
+
+    var cl = solveme[i].classList;
+
+    var real_answer = solveme[i].dataset.answer;
+
+    if (cl.contains("ignorecase")) {
+
+      real_answer = real_answer.toLowerCase();
+
+    }
+
+    if (cl.contains("nospaces")) {
+
+      real_answer = real_answer.replace(/ /g, "");
+
+    }
+
+    solveme[i].dataset.answer = real_answer;
+
+
+
+    /* attach checking function */
+
+    solveme[i].onkeyup = solveme_func;
+
+    solveme[i].onchange = solveme_func;
+
+
+
+    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+
+  }
+
+
+
+  /* set up radiogroups */
+
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+
+  for (var i = 0; i < radiogroups.length; i++) {
+
+    radiogroups[i].onchange = radiogroups_func;
+
+  }
+
+
+
+  /* set up selects */
+
+  var selects = document.getElementsByClassName("webex-select");
+
+  for (var i = 0; i < selects.length; i++) {
+
+    selects[i].onchange = select_func;
+
+    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+
+  }
+
+
+
+  update_total_correct();
+
+}
+
+
+
+</script>
+
+<script>
+/*
+ * Klickbare Bild-Kacheln für Quiz-Fragen.
+ * Jede Kachel (.image-quiz-item) lässt sich per Klick an-/abwählen
+ * (Klasse "selected"). Ein Klick auf ".image-quiz-check-btn" vergleicht die
+ * Auswahl mit dem Attribut data-correct="true"/"false" jeder Kachel, färbt
+ * sie entsprechend ein und zeigt die Trefferquote an.
+ * ".image-quiz-reset-btn" setzt die Kacheln wieder zurück.
+ */
+document.addEventListener("DOMContentLoaded", function () {
+  var quizzes = document.getElementsByClassName("image-quiz");
+
+  for (var q = 0; q < quizzes.length; q++) {
+    (function (quiz) {
+      var items = quiz.getElementsByClassName("image-quiz-item");
+      var checkBtn = quiz.querySelector(".image-quiz-check-btn");
+      var resetBtn = quiz.querySelector(".image-quiz-reset-btn");
+      var result = quiz.querySelector(".image-quiz-result");
+      var checked = false;
+
+      var i;
+      for (i = 0; i < items.length; i++) {
+        items[i].setAttribute("aria-pressed", "false");
+        items[i].addEventListener("click", function () {
+          if (checked) return;
+          var isSelected = this.classList.toggle("selected");
+          this.setAttribute("aria-pressed", isSelected ? "true" : "false");
+        });
+      }
+
+      if (checkBtn) {
+        checkBtn.addEventListener("click", function () {
+          var correctCount = 0;
+          for (var j = 0; j < items.length; j++) {
+            var item = items[j];
+            var isCorrect = item.dataset.correct === "true";
+            var isSelected = item.classList.contains("selected");
+            item.classList.remove("image-quiz-correct", "image-quiz-incorrect");
+            if (isSelected === isCorrect) {
+              item.classList.add("image-quiz-correct");
+              correctCount++;
+            } else {
+              item.classList.add("image-quiz-incorrect");
+            }
+          }
+          checked = true;
+          if (result) {
+            result.textContent = correctCount + " von " + items.length + " Diagrammen richtig beurteilt.";
+          }
+          checkBtn.disabled = true;
+        });
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener("click", function () {
+          for (var k = 0; k < items.length; k++) {
+            items[k].classList.remove("selected", "image-quiz-correct", "image-quiz-incorrect");
+            items[k].setAttribute("aria-pressed", "false");
+          }
+          if (result) {
+            result.textContent = "";
+          }
+          checked = false;
+          if (checkBtn) checkBtn.disabled = false;
+        });
+      }
+    })(quizzes[q]);
+  }
+});
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBuID0gSW5wdXRzLm51bWJlcihbMywgOTk5OV0sIHtcclxuICB2YWx1ZTogMTAwMCxcclxuICBzdGVwOiAxLFxyXG4gIGxhYmVsOiBcIlN0aWNocHJvYmVuZ3LDtnNzZSBOIChtYXguIDQgU3RlbGxlbilcIlxyXG59KVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgdmFyWSA9IElucHV0cy5yYW5nZShbMCwgNF0sIHtcclxuICB2YWx1ZTogMSxcclxuICBzdGVwOiAwLjA1LFxyXG4gIGxhYmVsOiBcIkZlaGxlcnZhcmlhbnogdm9uIHlcIlxyXG59KVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTMiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgdmFyWCA9IElucHV0cy5yYW5nZShbMCwgNF0sIHtcclxuICB2YWx1ZTogMCxcclxuICBzdGVwOiAwLjA1LFxyXG4gIGxhYmVsOiBcIkZlaGxlcnZhcmlhbnogdm9uIHhcIlxyXG59KVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2Ygc2VlZCA9IHtcclxuICBjb25zdCBmb3JtID0gSW5wdXRzLmJ1dHRvbihcIk5ldWUgU3RpY2hwcm9iZSB6aWVoZW5cIiwge1xyXG4gICAgdmFsdWU6IDEsXHJcbiAgICByZWR1Y2U6IChzKSA9PiBzICsgMVxyXG4gIH0pO1xyXG4gIC8vIEVpZ2VuZSBDU1MtS2xhc3NlLCBkYW1pdCBkZXIgQnV0dG9uIHVudGVuIGltIDxzdHlsZT4tQmxvY2sgZ3V0IGxlc2JhciBnZXN0YWx0ZXQgd2lyZFxyXG4gIGZvcm0ucXVlcnlTZWxlY3RvcihcImJ1dHRvblwiKS5jbGFzc0xpc3QuYWRkKFwic2VlZC1idG5cIik7XHJcbiAgcmV0dXJuIGZvcm07XHJcbn1cclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC01IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gTiBiZXJlaW5pZ2VuOiBnYW56ZSBaYWhsIHp3aXNjaGVuIDMgdW5kIDk5OTkgKGJlaSB1bmfDvGx0aWdlciBFaW5nYWJlOiAxMDAwKVxyXG5OID0gTnVtYmVyLmlzRmluaXRlKG4pID8gTWF0aC5taW4oOTk5OSwgTWF0aC5tYXgoMywgTWF0aC5yb3VuZChuKSkpIDogMTAwMCAgXHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIFN0YW5kYXJkbm9ybWFsdmVydGVpbHRlIFp1ZmFsbHN6YWhsZW46IG51ciBuZXUgZ2V6b2dlbiwgd2VubiBzaWNoIE4gb2RlciBkaWVcclxuLy8gU3RpY2hwcm9iZSDDpG5kZXJ0LiBCZWltIEJld2VnZW4gZGVyIFJlZ2xlciB3ZXJkZW4gc2llIG51ciB1bXNrYWxpZXJ0IOKAkyBzb1xyXG4vLyBcIndhY2tlbHRcIiBkaWUgUHVua3R3b2xrZSBuaWNodCBiZWkgamVkZW0gU2Nocml0dCBrb21wbGV0dCBuZXUuXHJcbmJhc2UgPSB7XHJcbiAgY29uc3Qgcm5kID0gZDMucmFuZG9tTm9ybWFsLnNvdXJjZShkMy5yYW5kb21MY2coKHNlZWQgKiA3OTE5ICsgTikgJSAyMTQ3NDgzNjQ3KSkoMCwgMSk7XHJcbiAgcmV0dXJuIEFycmF5LmZyb20oe2xlbmd0aDogTn0sICgpID0+ICh7dDogcm5kKCksIGV4OiBybmQoKSwgZXk6IHJuZCgpfSkpO1xyXG59XHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImRhdGEgPSBiYXNlLm1hcCgoZCkgPT4ge1xyXG4gIGNvbnN0IHhXYWhyID0gNCArIDEuNSAqIGQudDtcclxuICByZXR1cm4ge1xyXG4gICAgeDogeFdhaHIgKyBNYXRoLnNxcnQodmFyWCkgKiBkLmV4LFxyXG4gICAgeTogMiArIDAuNSAqIHhXYWhyICsgTWF0aC5zcXJ0KHZhclkpICogZC5leVxyXG4gIH07XHJcbn0pXHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtOCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIEtsZWluc3RlLVF1YWRyYXRlLVNjaMOkdHp1bmcgKGVpbmZhY2hlIGxpbmVhcmUgUmVncmVzc2lvbilcclxuZml0ID0ge1xyXG4gIGNvbnN0IG14ID0gZDMubWVhbihkYXRhLCAoZCkgPT4gZC54KTtcclxuICBjb25zdCBteSA9IGQzLm1lYW4oZGF0YSwgKGQpID0+IGQueSk7XHJcbiAgY29uc3Qgc3h4ID0gZDMuc3VtKGRhdGEsIChkKSA9PiAoZC54IC0gbXgpICoqIDIpO1xyXG4gIGNvbnN0IHN5eSA9IGQzLnN1bShkYXRhLCAoZCkgPT4gKGQueSAtIG15KSAqKiAyKTtcclxuICBjb25zdCBzeHkgPSBkMy5zdW0oZGF0YSwgKGQpID0+IChkLnggLSBteCkgKiAoZC55IC0gbXkpKTtcclxuICBjb25zdCBiMSA9IHN4eCA+IDAgPyBzeHkgLyBzeHggOiAwO1xyXG4gIGNvbnN0IGIwID0gbXkgLSBiMSAqIG14O1xyXG4gIGNvbnN0IHIyID0gc3h4ID4gMCAmJiBzeXkgPiAwID8gKHN4eSAqIHN4eSkgLyAoc3h4ICogc3l5KSA6IDA7XHJcbiAgcmV0dXJuIHtiMCwgYjEsIHIyfTtcclxufVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTkiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiIvLyBFcndhcnRldGUgU3RlaWd1bmcgYmVpIHNlaHIgZ3Jvc3NlbSBOIChSZWdyZXNzaW9uc3ZlcmTDvG5udW5nKTpcclxuLy8gMC41ICogVmFyKHhfd2FocikgLyAoVmFyKHhfd2FocikgKyBGZWhsZXJ2YXJpYW56IHZvbiB4KVxyXG5zbG9wZUV4cGVjdGVkID0gMC41ICogMi4yNSAvICgyLjI1ICsgdmFyWClcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xMCIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlBsb3QucGxvdCh7XHJcbiAgd2lkdGg6IDY0MCxcclxuICBoZWlnaHQ6IDQyMCxcclxuICBtYXJnaW5MZWZ0OiA1NSxcclxuICBtYXJnaW5Cb3R0b206IDQ1LFxyXG4gIHN0eWxlOiB7Zm9udFNpemU6IFwiMTRweFwifSxcclxuICB4OiB7bGFiZWw6IFwiSGFuZHktTnV0enVuZyAoU3R1bmRlbiBwcm8gVGFnKSDihpJcIiwgZG9tYWluOiBbLTQsIDEyXSwgZ3JpZDogdHJ1ZX0sXHJcbiAgeToge2xhYmVsOiBcIuKGkSBTY2htZXJ6ZW5cIiwgZG9tYWluOiBbLTUsIDExXSwgZ3JpZDogdHJ1ZX0sXHJcbiAgbWFya3M6IFtcclxuICAgIFBsb3QuZG90KGRhdGEsIHtcclxuICAgICAgeDogXCJ4XCIsXHJcbiAgICAgIHk6IFwieVwiLFxyXG4gICAgICByOiBOID4gMTAwMCA/IDIgOiAzLjUsXHJcbiAgICAgIGZpbGw6IFwiIzJiNmNiMFwiLFxyXG4gICAgICBmaWxsT3BhY2l0eTogTiA+IDEwMDAgPyAwLjMgOiAwLjU1XHJcbiAgICB9KSxcclxuICAgIFBsb3QubGluZShbWy00LCAyICsgMC41ICogLTRdLCBbMTIsIDIgKyAwLjUgKiAxMl1dLCB7XHJcbiAgICAgIHN0cm9rZTogXCIjODg4ODg4XCIsXHJcbiAgICAgIHN0cm9rZURhc2hhcnJheTogXCI2LDRcIixcclxuICAgICAgc3Ryb2tlV2lkdGg6IDJcclxuICAgIH0pLFxyXG4gICAgUGxvdC5saW5lKFtbLTQsIGZpdC5iMCArIGZpdC5iMSAqIC00XSwgWzEyLCBmaXQuYjAgKyBmaXQuYjEgKiAxMl1dLCB7XHJcbiAgICAgIHN0cm9rZTogXCIjYzAzOTJiXCIsXHJcbiAgICAgIHN0cm9rZVdpZHRoOiAzXHJcbiAgICB9KVxyXG4gIF1cclxufSlcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Imh0bWxgPHAgc3R5bGU9XCJmb250LXNpemU6MS4wNWVtXCI+XHJcbiAgPHN0cm9uZz5HZXNjaMOkdHp0ZXMgTW9kZWxsOjwvc3Ryb25nPiDFtyA9ICR7Zml0LmIwLnRvRml4ZWQoMil9ICsgJHtmaXQuYjEudG9GaXhlZCgyKX0gwrcgeFxyXG4gICZuYnNwO3wmbmJzcDsgPHN0cm9uZz5SwrI8L3N0cm9uZz4gPSAke2ZpdC5yMi50b0ZpeGVkKDIpfVxyXG4gICZuYnNwO3wmbmJzcDsgPHN0cm9uZz5OPC9zdHJvbmc+ID0gJHtOfVxyXG48L3A+XHJcbjxwIHN0eWxlPVwiZm9udC1zaXplOjAuOTVlbTsgY29sb3I6IzU1NTtcIj5cclxuICBCZWkgc2VociBncm9zc2VtIE4gd8OkcmUgZGllIGdlc2Now6R0enRlIFN0ZWlndW5nIGV0d2FcclxuICA8c3Ryb25nPiR7c2xvcGVFeHBlY3RlZC50b0ZpeGVkKDIpfTwvc3Ryb25nPiAod2FocmUgU3RlaWd1bmc6IDAuNTApLlxyXG48L3A+YFxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ24nKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgndmFyWScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCd2YXJYJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3NlZWQnKSJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
